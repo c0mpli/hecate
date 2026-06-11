@@ -89,6 +89,79 @@ def is_extreme_ray(v: tuple, facets: list[tuple], n: int) -> bool:
     return sympy.Matrix(sat).rank() == (1 << n) - 2
 
 
+def _reduce(J: int, n: int) -> int:
+    """7-label mask -> party mask via purity (label n is the purifier)."""
+    if J >> n & 1:
+        J = ~J & ((1 << (n + 1)) - 1)
+    return J
+
+
+def sa_instances(n: int) -> list[tuple]:
+    """ALL subadditivity instances S(I)+S(J) >= S(IJ), I,J disjoint nonempty
+    subsets of the n+1 boundary labels with IJ proper. This is the facet set
+    of the subadditivity cone (SAC); it includes Araki-Lieb via purity. The
+    polychromatic instances are NOT in the Sym(n+1) orbit of S(A)+S(B)>=S(AB),
+    which is why this is its own constructor."""
+    full = (1 << (n + 1)) - 1
+    out = set()
+    for I in range(1, full + 1):
+        for J in range(1, full + 1):
+            if I & J or J <= I or (I | J) == full:
+                continue
+            f = {m: 0 for m in range(1, 1 << n)}
+            f[_reduce(I, n)] += 1
+            f[_reduce(J, n)] += 1
+            f[_reduce(I | J, n)] -= 1
+            out.add(vector_to_paper(f, n))
+    return sorted(out)
+
+
+def ssa_instances(n: int) -> list[tuple]:
+    """ALL strong-subadditivity instances S(XY)+S(YZ) >= S(Y)+S(XYZ) over
+    disjoint nonempty subsets X, Y, Z of the n+1 boundary labels (weak
+    monotonicity is included via purity; X|Y|Z may cover everything, in
+    which case the S(XYZ) term vanishes)."""
+    full = (1 << (n + 1)) - 1
+    out = set()
+    for Y in range(1, full + 1):
+        rest = full & ~Y
+        for X in range(1, full + 1):
+            if X & ~rest:
+                continue
+            for Z in range(1, full + 1):
+                if Z <= X or Z & ~rest or Z & X:
+                    continue
+                f = {m: 0 for m in range(1, 1 << n)}
+                f[_reduce(X | Y, n)] += 1
+                f[_reduce(Y | Z, n)] += 1
+                f[_reduce(Y, n)] -= 1
+                xyz = X | Y | Z
+                if xyz != full:
+                    f[_reduce(xyz, n)] -= 1
+                out.add(vector_to_paper(f, n))
+    return sorted(out)
+
+
+def perm_index_matrix(n: int):
+    """All Sym(n+1) actions as index maps on paper-order positions.
+
+    Row p is a length-(2^n - 1) array sigma with (perm_p . v)[k] = v[sigma[k]]
+    for any paper-order vector v — the purified symmetry action is a pure
+    permutation of components. Lets numpy apply the whole group at once:
+    images = v[PERM] is a (n+1)!-row matrix of all images of v.
+    """
+    from hec.subsets import paper_order
+
+    order = paper_order(n)
+    pos = {m: i for i, m in enumerate(order)}
+    ident = {m: pos[m] for m in order}  # value = source position
+    rows = []
+    for perm in permutations(range(n + 1)):
+        moved = permute_vector(ident, perm, n)
+        rows.append([moved[m] for m in order])
+    return rows
+
+
 def expand_inequalities(named_ineqs, n: int):
     """[(name, lhs, rhs)] -> (instances, orbit_sizes); instances deduped."""
     instances: set[tuple] = set()

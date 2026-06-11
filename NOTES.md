@@ -3,6 +3,69 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 2: M1 + M2 complete, P2 + P3 reproduced, M3 scaffolded
+
+**M1 acceptance.** `verify_engine.py`: 1,000,000 random graphs (igraph fast
+path, 6 workers), zero SA/AL/SSA/WM/MMI violations, 39.8 s. Fast path is
+exact for integer weights (sums ≪ 2⁵³) and cross-validated against the
+networkx reference on 360 graphs at n=3,4,5.
+
+**P2 — the 5-party cone (arXiv:1903.09148), reproduced exactly** from
+transcribed Tables 1–2 (`verify_c5.py`):
+- 8 inequality orbits expand under purified Sym(6) to exactly the paper's
+  sizes (15,20,45,72,10,60,60,90) → 372 facet instances.
+- All 19 ray representatives satisfy all 372 instances and are extreme
+  (saturated-facet rank 30 = dim−1, exact sympy).
+- 19 distinct orbits, sizes summing to exactly 2267.
+- `--duality`: Normaliz (exact double description, 19 min) re-derives the
+  ray set from the 372 facets — equals the 19-orbit expansion **exactly**.
+
+**M2 — contraction-map prover** (`prove_inequalities.py`, certificates in
+`reports/contraction_maps/`):
+- MMI re-derived by brute force in 0.5 s (the P1 deliverable); CP-SAT agrees.
+- CP-SAT proves MMI2, QCyclic, Q2, Q4, Q5 (full all-pairs verification).
+- Q3: CP-SAT returns INFEASIBLE on the *weighted* cube — a small theorem:
+  Q3 has no weighted-cube contraction map; its proof needs the unit-expanded
+  cube (3·S(ABC) → three coordinates), i.e. exactly the hard case that
+  motivated the deterministic algorithm of arXiv:2403.13283. Next prover
+  milestone: unit expansion (+ symmetry reduction over repeated coordinates).
+- Canonicalization (`canon.py`): Sym(n+1) lex-min vector keys; weighted-graph
+  keys via pynauty (edge-subdivision encoding, boundary vertices pinned).
+
+**P3 — He–Hubeny–Rota classification (arXiv:2412.15364), re-verified from
+scratch** (`verify_er6.py`, 208 rays from the paper's GitHub data repo,
+mirrored in `data/raw/rota/`):
+- All 208 are extreme rays of the 6-party subadditivity cone (saturated-SA
+  rank 62; the SAC needs ALL polychromatic SA instances — 903 of them — not
+  just the 21 atomic ones; bug caught by rank ceiling at 21) and all are
+  SSA-compatible (3003 instances).
+- HEI classification: checking all Sym(7) images (5040 index-permutations,
+  numpy) against the 1877 Czech et al. orbit representatives gives exactly
+  **52 violators / 156 clean — matching the paper**. (Representatives alone
+  give 30 — orbit expansion is essential.)
+- The 6 mystery orbits s ∈ {110, 145, 146, 168, 180, 181} confirmed clean →
+  written with provenance to `data/targets/mystery_orbits.json`. These are
+  the T1 targets.
+
+**M3 scaffold** (`realize.py` v1: hill-climb over tree-biased topologies +
+star/double-star motifs, integer weights, exact double verification):
+- Independently realized 8/19 five-party orbits (all 7 star rays + ray 9)
+  with certificates in `reports/realizations/` — found without looking at
+  the paper's published graphs.
+- Bounded first pass on the 6 mystery orbits (200 restarts × 3000 moves
+  each): no realization — logged in `reports/mystery_attempts.jsonl`, no
+  claim implied. The real attack is the (topology, cut-assignment) → LP
+  feasibility engine of SPEC.md §6, which also yields exclusion certificates.
+
+**Corrections to SPEC.md numbers:** Czech ancillary has **1877** inequalities
+(not 1876); the data lives in M. Rota's GitHub repo (Zenodo DOI
+10.5281/zenodo.14983856) — the arXiv v3 source tarball has no anc/ files.
+
+**Next session:** LP cut-assignment realizer (trees first, per the tree
+conjecture); unit-expanded Q3 proof; parse the 19 published C5 graphs
+(data/raw/1903.09148/01..19.pdf) to cross-check the realizer; then sustained
+mystery-orbit runs with exclusion bookkeeping.
+
 ## 2026-06-12 — Day 1: engine built and verified
 
 **Done (full Day-1 checklist from SPEC.md):**

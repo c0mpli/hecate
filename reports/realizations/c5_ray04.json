@@ -1,0 +1,76 @@
+{
+  "what": "graph model independently realizing 5-party extreme ray 4",
+  "ray": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    2,
+    2,
+    2,
+    2,
+    2,
+    1
+  ],
+  "ordering": "(size, lex), purifier = O vertex",
+  "scale": 2,
+  "edges": [
+    [
+      "b0",
+      "b1",
+      13
+    ],
+    [
+      "b0",
+      "0",
+      2
+    ],
+    [
+      "b0",
+      "2",
+      2
+    ],
+    [
+      "b0",
+      "4",
+      2
+    ],
+    [
+      "b0",
+      "O",
+      2
+    ],
+    [
+      "b1",
+      "1",
+      2
+    ],
+    [
+      "b1",
+      "3",
+      2
+    ]
+  ],
+  "verify": "hec.entropy.entropy_vector(G, 5) == scale * ray"
+}
