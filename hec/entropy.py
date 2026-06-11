@@ -85,3 +85,51 @@ def entropy_vector(G: nx.Graph, n: int, capacity: str = "capacity") -> dict[int,
 def format_vector(S: dict[int, object], n: int) -> str:
     """One-line rendering in subset order A, B, AB, C, AC, BC, ABC, ..."""
     return ", ".join(f"S({subset_label(m, n)})={S[m]}" for m in sorted(S))
+
+
+def entropy_vector_fast(G, n: int, capacity: str = "capacity") -> dict[int, int]:
+    """igraph-backed S-vector for integer-weighted graphs (the search path).
+
+    igraph computes min-cuts in C with float capacities. For integer weights
+    this is still exact: cut values are sums of integers far below 2**53, so
+    every comparison and the result are exact in IEEE doubles. We assert
+    integrality on the way out and return ints. Use entropy_vector (networkx,
+    arbitrary exact types) as the reference/claims path.
+
+    Accepts a networkx graph or a precomputed (num_vertices, edges, caps,
+    party_ids, purifier_id) tuple from prepare_fast().
+    """
+    import igraph as ig
+
+    if isinstance(G, tuple):
+        N, base_edges, base_caps, party_idx, pur_idx = G
+    else:
+        N, base_edges, base_caps, party_idx, pur_idx = prepare_fast(G, n, capacity)
+
+    src, snk = N, N + 1
+    big = float(sum(base_caps)) + 1.0
+    S: dict[int, int] = {}
+    for mask in range(1, 1 << n):
+        inside = [party_idx[i] for i in range(n) if mask >> i & 1]
+        outside = [party_idx[i] for i in range(n) if not mask >> i & 1] + [pur_idx]
+        edges = base_edges + [(src, v) for v in inside] + [(snk, v) for v in outside]
+        caps = base_caps + [big] * (len(inside) + len(outside))
+        g = ig.Graph(N + 2, edges)
+        value = g.st_mincut(src, snk, capacity=caps).value
+        assert value == int(value), f"non-integral cut {value}; use exact path"
+        S[mask] = int(value)
+    return S
+
+
+def prepare_fast(G: nx.Graph, n: int, capacity: str = "capacity") -> tuple:
+    """Convert a networkx graph to the tuple form entropy_vector_fast wants."""
+    nodes = list(G.nodes)
+    idx = {v: i for i, v in enumerate(nodes)}
+    edges, caps = [], []
+    for u, v, data in G.edges(data=True):
+        if u == v:
+            continue
+        edges.append((idx[u], idx[v]))
+        caps.append(float(data[capacity]))
+    party_idx = {i: idx[i] for i in range(n)}
+    return len(nodes), edges, caps, party_idx, idx[PURIFIER]
