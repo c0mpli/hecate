@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+# fetched artifacts — scripts/fetch_papers.sh is the manifest
+papers/
+data/raw/
+# generated certificates are committed deliberately, never bulk
+reports/*.tmp

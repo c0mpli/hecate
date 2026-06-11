@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hec"
+version = "0.1.0"
+description = "Holographic entropy cone toolkit: graph-model entropy engine, inequality checks, cone tools"
+requires-python = ">=3.10"
+dependencies = [
+    "networkx>=3.0",
+]
+
+[project.optional-dependencies]
+# Fast/search extras — float or C-backed paths for the big hunts (M1+)
+search = ["python-igraph>=0.11", "numpy", "ortools"]
+# Exact/claim extras — rational arithmetic, polyhedral tools, canonical forms (M1-M2)
+exact = ["sympy", "pycddlib", "pynauty"]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["hec"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
