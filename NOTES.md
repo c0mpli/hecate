@@ -3,6 +3,45 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 5 addendum 2: rung-1 oracles, N6er cross-ref, gate survey
+
+**Rung-1 oracle set, mostly DERIVED rather than transcribed:** the labeled
+engine (`entropy_vector_labeled`) now supports non-simple models. Splitting
+every multi-degree boundary vertex of our verified published C5 models
+(`hec/splits.py`, the fig:N5trees transform) preserves the entropy vector
+EXACTLY for all ten non-chordal rays and yields verified non-simple TREES
+for eight (11–16, 18, 19) — same QA bar as transcription, machine-checked.
+Rays 10 and 17 keep pure-bulk cycles after splitting (the Δ-Y class) — they
+are the hard rung-1 validation targets; their fig:N5trees rows remain to be
+transcribed (or beaten by the annealer) next session.
+
+**~14 tree-resistant models cross-ref (report):** only two are public —
+figs. N6er1/N6er3 of 2204.00075. Both transcribed and verified (SA+SSA
+hold, bulk 4-cycles as advertised; `hec/n6er_data.py`). NEITHER is among
+the 208: saturated-SA ranks 58 and 61 < 62, i.e. they are HEC₆ extreme rays
+with higher-dimensional PMIs, structurally outside the SSA-compatible
+SAC₆-extreme stratum. Zero overlap with {110, 145, 168}. The other ~12
+identities are not published (the 4122-ray "n6wip" dataset). The HHR
+bulk-cycle pair (2 of the 150, which ARE in the 208) is therefore a
+DIFFERENT pair — extract their s-indices from 2412.15364's tables next
+session. **Bonus target:** 2204.00075 explicitly failed to tree-convert
+N6er3; a verified tree for its vector resolves an open item of that paper —
+prime annealer target after rung 1.
+
+**Non-simple gate survey (2512.18702 §non-chordal-case):** no closed-form
+necessary condition exists for non-simple-tree realizability. The
+characterization: S is non-simple-tree realizable iff SOME fine-graining S′
+(party-splitting, N′ > N) has chordal PMI — then Algorithm 1 builds the
+tree upstairs and relabeling descends. The paper leaves the search over
+fine-grainings open (choice of CG-map, free components of S′). This IS the
+rung-2 track-2 machinery: bounded-N′ exhaustion of chordal fine-grainings =
+exclusion-grade evidence of tree-unrealizability. Implementation is a
+rung-2 deliverable, not a quick gate.
+
+**Rung-2 is two-track (user directive):** (a) tree equivalent for the HHR
+pair = win; (b) bounded-exclusion of chordal fine-grainings = bigger win —
+exclusion-grade machinery only, never annealing absence.
+
 ## 2026-06-12 — Session 5 addendum: items 1–3 closed
 
 **19/19 transcriptions verified** — fig 12 finally fell to the fig-18

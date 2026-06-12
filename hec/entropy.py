@@ -87,6 +87,41 @@ def format_vector(S: dict[int, object], n: int) -> str:
     return ", ".join(f"S({subset_label(m, n)})={S[m]}" for m in sorted(S))
 
 
+def entropy_vector_labeled(
+    G: nx.Graph, n: int, party: dict, capacity: str = "capacity"
+) -> dict[int, object]:
+    """S(I) for NON-SIMPLE models: `party` maps each boundary vertex to its
+    label (0..n-1 or PURIFIER); a party may label several vertices. The cut
+    for subset I separates ALL vertices of parties in I from ALL remaining
+    boundary vertices. Reduces to entropy_vector when party is a bijection.
+    """
+    H = nx.Graph()
+    H.add_nodes_from(G.nodes)
+    for u, v, data in G.edges(data=True):
+        if u == v:
+            continue
+        w = data[capacity]
+        if H.has_edge(u, v):
+            H[u][v][capacity] += w
+        else:
+            H.add_edge(u, v, **{capacity: w})
+    H.add_node(_SRC)
+    H.add_node(_SNK)
+    S: dict[int, object] = {}
+    for mask in range(1, 1 << n):
+        inside = [v for v, p in party.items()
+                  if isinstance(p, int) and mask >> p & 1]
+        outside = [v for v, p in party.items()
+                   if not (isinstance(p, int) and mask >> p & 1)]
+        H.add_edges_from((_SRC, v) for v in inside)
+        H.add_edges_from((_SNK, v) for v in outside)
+        value, _ = nx.minimum_cut(H, _SRC, _SNK, capacity=capacity)
+        S[mask] = value
+        H.remove_edges_from(list(H.edges(_SRC)))
+        H.remove_edges_from(list(H.edges(_SNK)))
+    return S
+
+
 def entropy_vector_fast(G, n: int, capacity: str = "capacity") -> dict[int, int]:
     """igraph-backed S-vector for integer-weighted graphs (the search path).
 
