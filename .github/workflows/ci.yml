@@ -13,8 +13,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: nauty headers (for pynauty)
-        run: sudo apt-get update -q && sudo apt-get install -y -q libnauty2-dev
+      - name: nauty headers (for pynauty — optional, tests skip without it)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q libnauty-dev \
+            || sudo apt-get install -y -q libnauty2-dev \
+            || echo "no nauty dev package — pynauty will be skipped"
       - name: install
         run: |
           python -m pip install -q --upgrade pip
