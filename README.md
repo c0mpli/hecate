@@ -20,7 +20,7 @@ the search loops to attack the open n=6 frontier. Full plan:
 | M1 engine + cone tools | **done** — 10⁶ graphs zero violations (40s); 5-party cone (P2) reproduced exactly incl. Normaliz facet↔ray duality (2267 rays) |
 | M2 prover + canonicalization | **done** — MMI re-derived; CP-SAT proves 5/6 nontrivial C5 orbits (Q3: map requires the unit-expanded cube — pending, via arXiv:2403.13283) |
 | P3 reproduction | **done** — all 208 six-party orbits re-verified (extreme rank-62, SSA-compatible); 52-violator index set == the paper's published list |
-| C5 ground truth | **done** — all 19 published graph models transcribed & exactly verified (`hec/c5_graphs.py`); **19/19 ray realizations certified** in `reports/realizations/`: 16 fully independent (13 LP-cold + 3 annealed), 3 second-tier on published topologies (rays 10, 12, 19); derived split-tree oracles for 8/10 non-chordal rays |
+| C5 ground truth | **done** — all 19 published graph models transcribed & exactly verified (`hec/c5_graphs.py`); **19/19 ray realizations certified** in `reports/realizations/`: 16 fully independent (13 LP-cold + 3 annealed) and 3 *second-tier* (rays 10, 12, 19) — second-tier means the topology comes from the published figure while the weights are independently re-derived by LP, with the certificate verified exactly like any other; derived split-tree oracles for 8/10 non-chordal rays |
 | M3 the hunt | **reframed by the field** — {146, 180, 181} were realized via RL search in arXiv:2601.19979 (our independent verification: queued, next session); {110, 145, 168} remain open with non-realizability conjectured. All six fail the chordality gate: no simple-forest model exists for any of them (theorem, arXiv:2512.24490). The campaign on the suspects is two-track: (A) realization search over non-simple trees and cyclic graphs (slack-guided topology annealing), and (B) a separating-inequality hunt; absence-of-realization from annealing is never treated as evidence — exclusion claims come only from exclusion-grade machinery (bounded exhaustion of chordal fine-grainings) |
 
 ## Layout
@@ -35,7 +35,7 @@ the search loops to attack the open n=6 frontier. Full plan:
 - `hec/realize.py` — target ray → graph search (v1 hill-climb)
 - `hec/lp_realize.py` — LP cut-assignment engine: slack-LP descent → hard-pin constraint generation → exact integer certification
 - `hec/anneal.py` — topology annealing with LP slack as fitness (the Sparse Oracle Principle: search sparse structure space, not dense supergraphs)
-- `hec/chordality.py` — the arXiv:2512.24490 iff-gate for simple-forest realizability (correlation hypergraph → line graph → chordal); calibrated on all 19 C5 rays
+- `hec/chordality.py` — the arXiv:2512.24490 iff-gate for simple-forest realizability (correlation hypergraph → line graph → chordal); calibrated on C5: 9 must-pass (known simple trees) + 10 derived facts (non-chordality is a new, criterion-dependent claim)
 - `hec/tree_builder.py` — Algorithm 1 of arXiv:2512.18702: constructive simple-tree builder, 9/9 exact on the chordal C5 rays
 - `hec/c5_graphs.py` — the 19 published C5 graph models, transcribed and exactly verified
 - `hec/splits.py` + `entropy_vector_labeled` — non-simple models (multi-vertex parties); boundary-splitting transform with exact re-verification
