@@ -53,9 +53,17 @@ holographic" (every known non-holographic ER at n=6 violates an n≤5 HEI).
 Both attack directions are live: realization (T1+) and new-facet hunting
 that kills a mystery orbit (T1−/T3 combined — the bigger result if true).
 
-**Mystery pass with the LP engine:** bounded run logged in
-`reports/mystery_attempts.jsonl` (engine=lp, 80 attempts/orbit, seed 4242)
-— see entry below this line for the outcome once it lands.
+**Mystery pass with the LP engine:** no realization for any of the 6 orbits
+(80 LP attempts each, ~4.5 min/orbit, seed 4242) — logged in
+`reports/mystery_attempts.jsonl`, no claims. Sustained T1 campaign design:
+(i) exhaustive small-tree topology sweeps with per-(topology, assignment)
+infeasibility certificates — the publishable-exclusion path; (ii) the
+new-6-party-HEI hunt (T3) which could classify a mystery orbit negatively.
+
+**Repo hygiene (pre-outreach):** build/ artifact purged from git; CI
+(GitHub Actions, pytest on push) + badge; Data & references section pinning
+the Rota data at commit e973df6e0aa6 (fetch script clones that snapshot);
+CITATION.cff; MIT license; v0.1.0 release.
 
 ## 2026-06-12 — Session 2: M1 + M2 complete, P2 + P3 reproduced, M3 scaffolded
 
