@@ -3,6 +3,24 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 5 addendum: items 1–3 closed
+
+**19/19 transcriptions verified** — fig 12 finally fell to the fig-18
+lesson applied to itself: its stacked "11" label is two labels, the figure
+has 16 unit edges (central hub b5 joined to b1–b4, every boundary vertex on
+two bulks), scale 2. All searches had been constrained to 15 edges. Locked
+into the suite (`tests/test_c5_graphs.py`).
+
+**19/19 certificates in reports/realizations/**: 16 fully independent
+(13 LP cold + 3 annealed), 3 second-tier with explicit provenance
+(rays 10, 12, 19 — published topology credited, weights via LP recovery).
+
+Transcription craft notes for next time (n=6 figures will be worse):
+count LABELS not lines; stacked digits are separate labels; lines pass
+through vertex positions without terminating; batched PDF reads can shuffle
+document order — always adjudicate entry↔figure by orbit-matching against
+all candidate rays.
+
 ## 2026-06-12 — Session 5: the chordality gate (pre-campaign report)
 
 **Papers ingested:** arXiv:2512.18702 + 2512.24490 (Hubeny–Rota, Dec 2025;

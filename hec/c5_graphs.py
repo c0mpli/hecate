@@ -37,10 +37,13 @@ C5_PUBLISHED_GRAPHS = {
     11: [(O, "b3", 1), ("b1", O, 1), ("b1", "b2", 2), ("b2", "b3", 2),
          ("b2", E, 2), (A, "b3", 1), (B, "b1", 1), (C, "b1", 2),
          (D, "b3", 2)],
+    # 12 has 16 unit edges (the figure's stacked "11" is two labels, the
+    # same trap as fig 18): a central bulk hub b5 joined to b1-b4, every
+    # boundary vertex on two bulks. Scale 2.
     12: [(A, "b1", 1), (A, "b4", 1), (B, "b1", 1), (B, "b2", 1), (C, "b2", 1),
          (C, "b3", 1), (D, "b3", 1), (D, "b4", 1), (E, "b2", 1), (E, "b4", 1),
          (O, "b1", 1), (O, "b3", 1), ("b5", "b1", 1), ("b5", "b2", 1),
-         ("b5", "b3", 1)],  # FIXME: still failing verification; under re-read
+         ("b5", "b3", 1), ("b5", "b4", 1)],
     13: [("b1", O, 1), ("b1", "b2", 1), ("b1", D, 1), ("b2", O, 1),
          ("b2", D, 1), (A, "b1", 2), (B, "b1", 1), (B, "b2", 1),
          (C, "b2", 2), (E, "b2", 2)],  # scale 2
