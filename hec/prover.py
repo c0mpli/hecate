@@ -111,6 +111,122 @@ def find_contraction_bruteforce(ineq: Inequality) -> dict | None:
     return None
 
 
+def find_contraction_symmetric_expanded(
+    ineq: Inequality, time_limit_s: float = 1500.0, workers: int = 6
+):
+    """Contraction map on the UNIT-EXPANDED cube, restricted to maps symmetric
+    under permuting identical copies (the weighted-cube method can be
+    genuinely infeasible — Q3 is — while the expanded cube still admits maps).
+
+    Expansion: a term c*S(T) becomes c unit coordinates. A copy-symmetric map
+    depends only on the per-group counts of ones, and its image is taken
+    canonically (first k coordinates of each group set). Domain classes are
+    count tuples K in prod[0..s_g]; the image is a count tuple c(K). Adjacent
+    classes (one coordinate flip) must satisfy sum_h |c_h(K) - c_h(K')| <= 1,
+    which by canonical lifting and the hypercube path metric makes the lifted
+    map a genuine contraction. Symmetry is a search restriction, NOT proven
+    complete: FEASIBLE => theorem; INFEASIBLE => only 'no symmetric map'.
+
+    Returns {class_tuple: count_tuple} or None; solver status in
+    find_contraction_symmetric_expanded.last_status.
+    """
+    from itertools import product as iproduct
+
+    from ortools.sat.python import cp_model
+
+    Lg = [(m, c) for c, m in ineq.lhs]   # (mask, multiplicity)
+    Rg = [(m, c) for c, m in ineq.rhs]
+    sL = [c for _, c in Lg]
+    sR = [c for _, c in Rg]
+
+    classes = list(iproduct(*(range(s + 1) for s in sL)))
+    anchors = []
+    for i in range(ineq.n + 1):
+        bit = 0 if i == ineq.n else (1 << i)
+        xK = tuple(s if m & bit else 0 for (m, _), s in zip(Lg, sL))
+        yK = tuple(s if m & bit else 0 for (m, _), s in zip(Rg, sR))
+        anchors.append((xK, yK))
+
+    # Domain tightening (pure preprocessing): the lifted map must satisfy
+    # |c_h(K) - y_h(anchor)| <= d1(K, anchor) for every boundary anchor,
+    # since anchors have fixed images and d1 on counts is the canonical-rep
+    # cube distance. Near anchors this pins most variables outright.
+    model = cp_model.CpModel()
+    C = {}
+    for K in classes:
+        row = []
+        for h in range(len(Rg)):
+            lo, hi = 0, sR[h]
+            for xK, yK in anchors:
+                d = sum(abs(a - b) for a, b in zip(K, xK))
+                lo = max(lo, yK[h] - d)
+                hi = min(hi, yK[h] + d)
+            if lo > hi:
+                find_contraction_symmetric_expanded.last_status = "INFEASIBLE"
+                return None  # no symmetric map can satisfy the anchor bounds
+            row.append(model.NewIntVar(lo, hi, f"c_{K}_{h}"))
+        C[K] = row
+
+    # adjacency: images of one-flip-apart classes differ by at most one unit
+    for K in classes:
+        for g in range(len(sL)):
+            if K[g] < sL[g]:
+                K2 = K[:g] + (K[g] + 1,) + K[g + 1:]
+                bools = []
+                for h in range(len(Rg)):
+                    b = model.NewBoolVar(f"d_{K}_{g}_{h}")
+                    model.Add(C[K][h] - C[K2][h] <= b)
+                    model.Add(C[K2][h] - C[K][h] <= b)
+                    bools.append(b)
+                model.Add(sum(bools) <= 1)
+
+    solver = cp_model.CpSolver()
+    solver.parameters.max_time_in_seconds = time_limit_s
+    solver.parameters.num_search_workers = workers
+    status = solver.Solve(model)
+    find_contraction_symmetric_expanded.last_status = solver.StatusName(status)
+    if status not in (cp_model.OPTIMAL, cp_model.FEASIBLE):
+        return None
+    cmap = {K: tuple(solver.Value(C[K][h]) for h in range(len(Rg))) for K in classes}
+    errs = check_symmetric_expanded(ineq, cmap)
+    assert not errs, f"solver map failed verification: {errs[:3]}"
+    return cmap
+
+
+def check_symmetric_expanded(ineq: Inequality, cmap: dict) -> list[str]:
+    """Independent verification of a symmetric expanded-cube map: totality,
+    image bounds, boundary anchors, and the adjacency contraction condition
+    (sufficient for all pairs by the path metric of the unit hypercube)."""
+    from itertools import product as iproduct
+
+    Lg = [(m, c) for c, m in ineq.lhs]
+    Rg = [(m, c) for c, m in ineq.rhs]
+    sL = [c for _, c in Lg]
+    sR = [c for _, c in Rg]
+    errors = []
+    classes = list(iproduct(*(range(s + 1) for s in sL)))
+    for K in classes:
+        v = cmap.get(K)
+        if v is None or len(v) != len(sR) or any(
+            not (0 <= x <= s) for x, s in zip(v, sR)
+        ):
+            errors.append(f"bad image for class {K}")
+            return errors
+    for i in range(ineq.n + 1):
+        bit = 0 if i == ineq.n else (1 << i)
+        xK = tuple(s if m & bit else 0 for (m, _), s in zip(Lg, sL))
+        yK = tuple(s if m & bit else 0 for (m, _), s in zip(Rg, sR))
+        if cmap[xK] != yK:
+            errors.append(f"boundary label {i}: f({xK}) = {cmap[xK]} != {yK}")
+    for K in classes:
+        for g in range(len(sL)):
+            if K[g] < sL[g]:
+                K2 = K[:g] + (K[g] + 1,) + K[g + 1:]
+                if sum(abs(a - b) for a, b in zip(cmap[K], cmap[K2])) > 1:
+                    errors.append(f"adjacency {K} -> {K2}")
+    return errors
+
+
 def find_contraction_cpsat(ineq: Inequality, time_limit_s: float = 120.0,
                            workers: int = 6) -> dict | None:
     """CP-SAT search. Constrains (C2) on hypercube edges only (sufficient by

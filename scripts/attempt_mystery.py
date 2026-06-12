@@ -23,16 +23,22 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
 def attempt(task):
-    s, vec, restarts, moves, seed = task
-    from hec.realize import realize_target
+    s, vec, restarts, moves, seed, engine = task
 
     rng = random.Random(seed * 13 + s)
     t0 = time.perf_counter()
-    hit = realize_target(
-        tuple(vec), 6, rng,
-        scales=(1, 2), bulk_range=(0, 7), restarts=restarts, moves=moves,
-        allow_cycles=True,
-    )
+    if engine == "lp":
+        from hec.lp_realize import lp_realize_target
+
+        hit = lp_realize_target(tuple(vec), 6, rng, attempts=restarts)
+    else:
+        from hec.realize import realize_target
+
+        hit = realize_target(
+            tuple(vec), 6, rng,
+            scales=(1, 2), bulk_range=(0, 7), restarts=restarts, moves=moves,
+            allow_cycles=True,
+        )
     dt = time.perf_counter() - t0
     if hit is None:
         return s, None, dt
@@ -46,17 +52,18 @@ def main():
     ap.add_argument("--moves", type=int, default=3000)
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--seed", type=int, default=2026)
+    ap.add_argument("--engine", choices=["hill", "lp"], default="hill")
     args = ap.parse_args()
 
     targets = json.loads((ROOT / "data/targets/mystery_orbits.json").read_text())
     tasks = [
-        (int(s), vec, args.restarts, args.moves, args.seed)
+        (int(s), vec, args.restarts, args.moves, args.seed, args.engine)
         for s, vec in targets["orbits"].items()
     ]
     with mp.Pool(args.workers) as pool:
         results = pool.map(attempt, tasks)
 
-    log = {"attempt": "realize.py v1 hill-climb", "restarts": args.restarts,
+    log = {"attempt": f"engine={args.engine}", "restarts": args.restarts,
            "moves": args.moves, "seed": args.seed, "results": {}}
     for s, hit, dt in sorted(results):
         if hit is None:

@@ -25,9 +25,10 @@ to attack the open n=6 frontier. Full plan: [SPEC.md](SPEC.md).
 - `hec/cone.py` — Sym(n+1) purified symmetry action, orbits, SA/SSA instance families, exact extremality
 - `hec/prover.py` — contraction maps: checker, brute force, CP-SAT search
 - `hec/canon.py` — dedupe keys: Sym(n+1) vector canon + pynauty weighted-graph canon
-- `hec/realize.py` — target ray → graph search (v1 hill-climb; LP engine next)
+- `hec/realize.py` — target ray → graph search (v1 hill-climb)
+- `hec/lp_realize.py` — LP cut-assignment engine: slack-LP descent → hard-pin constraint generation → exact integer certification
 - `hec/c5_data.py`, `hec/hei_data.py` — arXiv:1903.09148 tables; arXiv:2309.06296 loader
-- `scripts/` — `day1_mmi`, `verify_engine` (10⁶ run), `verify_c5` (P2 + `--duality`), `verify_hei6`, `verify_er6` (P3 + target extraction), `prove_inequalities`, `realize_c5`, `attempt_mystery`, `fetch_papers.sh`
+- `scripts/` — `day1_mmi`, `verify_engine` (10⁶ run), `verify_c5` (P2 + `--duality`), `verify_hei6`, `verify_er6` (P3 + target extraction), `prove_inequalities`, `prove_q3_expanded`, `realize_c5` / `attempt_mystery` (`--engine lp|hill`), `fetch_papers.sh`
 - `data/targets/mystery_orbits.json` — the 6 open T1 targets, validated, with provenance
 - `reports/` — machine-checkable certificates (contraction maps, realizations)
 - `NOTES.md` — running lab notebook

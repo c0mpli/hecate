@@ -23,14 +23,21 @@ OUT = pathlib.Path(__file__).resolve().parent.parent / "reports" / "realizations
 
 
 def attempt(task):
-    idx, ray, restarts, moves, seed = task
-    from hec.realize import realize_target
+    idx, ray, restarts, moves, seed, engine = task
 
     rng = random.Random(seed + idx)
     t0 = time.perf_counter()
-    hit = realize_target(
-        ray, 5, rng, scales=(1, 2), restarts=restarts, moves=moves, allow_cycles=True
-    )
+    if engine == "lp":
+        from hec.lp_realize import lp_realize_target
+
+        hit = lp_realize_target(ray, 5, rng, attempts=restarts)
+    else:
+        from hec.realize import realize_target
+
+        hit = realize_target(
+            ray, 5, rng, scales=(1, 2), restarts=restarts, moves=moves,
+            allow_cycles=True,
+        )
     dt = time.perf_counter() - t0
     if hit is None:
         return idx, None, dt
@@ -45,12 +52,13 @@ def main():
     ap.add_argument("--moves", type=int, default=2000)
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--seed", type=int, default=2026)
+    ap.add_argument("--engine", choices=["hill", "lp"], default="hill")
     args = ap.parse_args()
 
     from hec.c5_data import C5_EXTREME_RAYS
 
     tasks = [
-        (i, ray, args.restarts, args.moves, args.seed)
+        (i, ray, args.restarts, args.moves, args.seed, args.engine)
         for i, ray in enumerate(C5_EXTREME_RAYS, start=1)
     ]
     with mp.Pool(args.workers) as pool:
