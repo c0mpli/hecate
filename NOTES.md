@@ -41,6 +41,45 @@ What this does and does not say:
   unrealizability independently of HEIs") is the natural Track B companion
   and is now in the reading queue with the source in data/raw/.
 
+**Calibration relabeled (epistemics):** rays 1–9 are the must-pass
+verification set (published simple trees ⇒ chordality must hold; failure =
+bug). Rays 10–19 non-chordal are **derived facts** — new, criterion-
+dependent claims, consistent with 2204.00075 (which needed non-simple trees
+for exactly the non-tree-realized rays) and with every cyclic model our
+engines produced, but verified by nothing prior. Tests encode the split.
+
+**Constructive tree-builder run end-to-end** (`hec/tree_builder.py`,
+Algorithm 1 of 2512.18702): for all nine chordal rays, built the simple
+forest from the entropy vector alone (positive B-sets → line graph →
+clique tree → leaf attachment → edge weights by the split rule) and
+recomputed entropies exactly — **9/9 exact matches**; rays 1–7 emerge as
+the single-hub stars, 8–9 as the double-stars, recovering the published
+structures from pure entropy data.
+
+**Novelty pre-check (NEGATIVE — C5 rung is validation-only):**
+2204.00075's fig. N5trees already exhibits non-simple tree realizations for
+every HEC₅ extreme ray lacking one ("the conjecture has been confirmed for
+N=5", 2512.18702 §discussion). No novelty claim attaches to C5 trees, ever.
+Bonus intel from the same scan: circa 2022 only ~14 of 4,122 then-known
+HEC₆-candidate graph models resisted conversion to trees (one explicit
+stubborn case: fig. N6er3 of 2204.00075), and 2512.18702 reports that tree
+constructions for some bulk-cycle rays "have so far failed" — the HHR
+bulk-cycle rung of the ladder is genuinely open research.
+
+**Validation ladder for the annealer upgrade (party-splitting moves) —
+no rung skipped, each rung gates the next:**
+1. C5 rays 10–19: reproduce non-simple trees (known to exist — validation).
+2. HHR bulk-cycle pair (2412.15364): tree-equivalents — OPEN (attempts in
+   the literature failed; a hit here is a result).
+3. HLO triple {146, 180, 181}: tree-equivalents of their RL graphs.
+4. Suspects {110, 145, 168}: Track A proper.
+
+**Item-4 addition (HLO verification, next session):** record the topology
+class of each HLO graph (simple/non-simple × tree/cyclic). Chordality says
+none of {146, 180, 181} admits a simple forest — so if any HLO graph IS a
+simple forest and verifies, that contradicts the theorem ⇒ implementation
+bug somewhere ⇒ STOP and flag loudly before anything else.
+
 **Policies (user directives, binding):**
 1. Sparse Oracle Principle is the named finding (session-4 entry).
 2. Anneal on suspects = Track A only; annealing failure is NEVER citable as
