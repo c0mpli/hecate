@@ -3,6 +3,52 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 5: the chordality gate (pre-campaign report)
+
+**Papers ingested:** arXiv:2512.18702 + 2512.24490 (Hubeny–Rota, Dec 2025;
+building on 2412.18018). Main theorem of 2512.24490: an entropy vector
+obeying SA+SSA is realizable by a holographic **simple forest** (one
+boundary vertex per party, no cycles) **iff the line graph of its
+correlation hypergraph is chordal** — necessary AND sufficient, with a
+constructive tree-builder when it passes. Implemented in
+`hec/chordality.py` (exact arithmetic end-to-end).
+
+**Calibration (19 C5 rays):** rays 1–9 chordal (exactly the published
+simple-tree models: stars 1–7, double-stars 8–9); rays 10–19 NOT chordal —
+exactly the rays whose published and engine-found models all carry cycles.
+19/19 agreement with ground truth. Corollary worth noting: rays 10–19
+provably admit no simple-forest model, so IF the strong tree conjecture
+(2204.00075) holds they must be realizable by NON-simple trees — a concrete,
+falsifiable target for the upgraded annealer at n=5.
+
+**THE GATE RESULT — all six mystery orbits FAIL chordality:**
+s ∈ {110, 145, 168} (suspects) and s ∈ {146, 180, 181} (HLO-realized):
+none is realizable by any simple forest. Theorem-grade, certificate =
+rerun `hec.chordality.simple_forest_realizable` on the targets.
+
+What this does and does not say:
+- It does NOT kill any suspect: {146, 180, 181} also fail yet ARE
+  holographic (HLO's graphs must therefore be non-simple-tree/cyclic —
+  consistency check passed).
+- It DOES collapse Track A's search space: simple trees are provably dead
+  for the suspects. Any realization is a non-simple tree (parties labeling
+  several boundary vertices) or carries bulk cycles. If the strong tree
+  conjecture holds and the suspects are holographic, the realization is a
+  non-simple TREE — so Track A must add party-splitting moves (duplicate
+  boundary vertices per party) to the annealer BEFORE the campaign; the
+  current engine cannot represent the only tree class left.
+- 2512.18702's coarse-graining/fine-graining machinery ("detection of
+  unrealizability independently of HEIs") is the natural Track B companion
+  and is now in the reading queue with the source in data/raw/.
+
+**Policies (user directives, binding):**
+1. Sparse Oracle Principle is the named finding (session-4 entry).
+2. Anneal on suspects = Track A only; annealing failure is NEVER citable as
+   evidence of non-realizability.
+3. After next-session items 4–6 (HLO verify → oracle-treat → minimize):
+   STOP and send the SPEC §8 email. The separator/HEI hunt does not start
+   before the email is sent.
+
 ## 2026-06-12 — Session 4: published-graph oracles, the generator-gap proof, annealer
 
 **Strategic update (user, supersedes the 6-orbit plan):** the mysteries were
@@ -25,15 +71,22 @@ permutations), single/double-edit variant search, pool-subset search.
 **Fig 12 still unresolved** (15 unit edges, congested center; exhaustive
 pool search running). Trust nothing that passes near a vertex.
 
-**Oracle-mode diagnosis (the experiment of the session):** on the published
-topologies (weights stripped), `fit_weights` recovered exact weights for ALL
-five testable holdouts in 0–6 s, first or sixth attempt. Verdict:
-**the LP formulation is sound; the cold-search gap was 100% topology
-generation** — and not raw coverage either: complete super-topologies
-contain every needed structure but drown the pin-assignment search; the
-sparse true topologies converge instantly. Random sampling of the sparse
-family also fails (the crown of ray 10 is a ~1e-7 draw). The capability that
-was missing is *structure search with the LP slack as signal*.
+**NAMED FINDING — the Sparse Oracle Principle.** For LP cut-assignment
+realization, search difficulty is governed by the topology's density, not
+its coverage: a complete super-topology *contains* every realizing structure
+(the LP could zero edges down to it) yet the weight-fit reliably fails
+there, while on the exact sparse topology it converges in seconds. Evidence:
+oracle-mode runs on the five testable holdout rays — published topologies,
+weights stripped — recovered exact weights in 0–6 s (first to sixth
+attempt), after cold search over dense super-topologies had failed for
+hours. Mechanism: the number of candidate min-cut patterns per subset grows
+with density, so the pin-assignment (outer combinatorial) search drowns;
+sparsity collapses the pin space and the slack signal becomes informative.
+Consequences: (i) realization search must walk *sparse structure space*
+(hence `hec/anneal.py`, slack-guided topology moves); (ii) random sampling
+of the sparse family is insufficient (ray 10's crown is a ~1e-7 draw);
+(iii) at n=6 the same principle dictates annealing near the RL paper's
+13-internal-vertex frontier rather than LP-on-dense-supergraphs.
 
 **Topology annealer** (`hec/anneal.py`): local moves in the sparse-bulk
 family (re-home/add/delete boundary straps, toggle bulk-bulk edges,
