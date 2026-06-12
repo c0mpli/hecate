@@ -18,6 +18,10 @@ PAPERS=(
   "2409.17317:bao-furuya-naskar-partial-cubes"
   "2506.18086:contraction-map-completeness"
   "2204.00075:marginal-independence-tree-conjecture"
+  "2412.18018:hubeny-rota-correlation-hypergraph"
+  "2512.18702:hubeny-rota-tree-construction-algorithm"
+  "2512.24490:hubeny-rota-chordality-sufficient"
+  "2601.19979:he-lee-ooguri-rl-mystery-realizations"
 )
 
 # Papers with arXiv ancillary data files (shipped inside the source tarball)
