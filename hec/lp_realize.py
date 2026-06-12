@@ -139,7 +139,7 @@ def _hard_lp(masks, pins, seen, target, m):
 
 
 def fit_weights(G0, n, target, rng, descents=40, cut_rounds=40, patience=8,
-                warm=False):
+                warm=False, report=False):
     """Two-phase solve on a fixed topology. Returns (G_int, scale) or None.
 
     Phase 1 descends with the slack LP: pin each subset's current achieving
@@ -167,13 +167,13 @@ def fit_weights(G0, n, target, rng, descents=40, cut_rounds=40, patience=8,
         if all(S[k] == target[k] for k in masks):
             hit = _certify(G, n, target)
             if hit:
-                return hit
+                return (hit, 0.0) if report else hit
         for k in masks:
             seen[k].add(pat[k])
 
         w, slack = _slack_lp(masks, pat, seen, target, m)
         if w is None:
-            return None
+            return (None, best_slack) if report else None
         _set_weights(G, edges, w)
 
         if slack < 1e-7:
@@ -188,7 +188,7 @@ def fit_weights(G0, n, target, rng, descents=40, cut_rounds=40, patience=8,
                 if all(S2[k] == target[k] for k in masks):
                     hit = _certify(G, n, target)
                     if hit:
-                        return hit
+                        return (hit, 0.0) if report else hit
                 low = [k for k in masks if S2[k] < target[k]]
                 if not low:
                     break  # rationalization drift; re-enter descent
@@ -204,7 +204,7 @@ def fit_weights(G0, n, target, rng, descents=40, cut_rounds=40, patience=8,
                     G[u][v]["capacity"] = Fraction(rng.randint(1, rmax))
                 stall = 0
         best_slack = min(best_slack, slack)
-    return None
+    return (None, best_slack) if report else None
 
 
 def _complete_topology(n, b):
@@ -224,14 +224,42 @@ def _hub_topology(n, rng, hubs):
     return G
 
 
+def _sparse_bulk_topology(n, rng, max_bulk=6):
+    """The family the published C5 models live in (oracle-mode finding):
+    a sparse bulk skeleton (path/tree/cycle over 1-6 bulk vertices) with
+    each boundary vertex strapped to 1-3 distinct bulks. Covers stars,
+    double-stars, bulk-cycle 'crowns' and ladder motifs. Dense
+    super-topologies contain all of these but drown the pin-assignment
+    search; sparse ones make it converge in seconds."""
+    b = rng.randint(1, max_bulk)
+    hubs = [f"b{i}" for i in range(b)]
+    G = nx.Graph()
+    G.add_nodes_from(hubs)
+    order = hubs[:]
+    rng.shuffle(order)
+    for i in range(1, b):  # random tree skeleton
+        G.add_edge(order[i], order[rng.randrange(i)], capacity=1)
+    if b >= 3 and rng.random() < 0.5:  # close a bulk cycle (crown family)
+        u, v = rng.sample(hubs, 2)
+        if not G.has_edge(u, v):
+            G.add_edge(u, v, capacity=1)
+    for v in boundary_vertices(n):
+        d = min(b, rng.choice((1, 1, 1, 2, 2, 2, 3)))
+        for h in rng.sample(hubs, d):
+            G.add_edge(v, h, capacity=1)
+    return G
+
+
 def sample_topology(n, rng):
     roll = rng.random()
-    if roll < 0.40:
-        return _complete_topology(n, rng.randint(1, 6))
+    if roll < 0.45:
+        return _sparse_bulk_topology(n, rng)
     if roll < 0.60:
+        return _complete_topology(n, rng.randint(1, 6))
+    if roll < 0.75:
         return _hub_topology(n, rng, rng.randint(1, 3))
     G = random_tree(n, rng, n_bulk=rng.randint(0, 5), wmax=4)
-    if roll < 0.80:
+    if roll < 0.9:
         verts = list(G.nodes)
         for _ in range(rng.randint(1, 3)):
             u, v = rng.sample(verts, 2)
