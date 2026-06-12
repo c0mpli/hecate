@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use HECATE in your research, please cite it as below."
+title: "HECATE: Holographic Entropy Cone Analysis & Theorem Engine"
+type: software
+authors:
+  - name: "c0mpli"
+repository-code: "https://github.com/c0mpli/hecate"
+url: "https://github.com/c0mpli/hecate"
+license: MIT
+version: 0.1.0
+date-released: 2026-06-12
+abstract: >-
+  Exact graph-model toolkit for the holographic entropy cone: min-cut entropy
+  engine, polyhedral cone tools with purified Sym(n+1) symmetry handling,
+  contraction-map prover (brute-force and CP-SAT), canonical forms, and an
+  LP cut-assignment realization search. Reproduces the 5-party cone
+  (arXiv:1903.09148) and the 6-party extreme-ray classification
+  (arXiv:2412.15364) in exact arithmetic.
+keywords:
+  - holographic entropy cone
+  - quantum gravity
+  - entanglement entropy
+  - min-cut
+  - polyhedral geometry

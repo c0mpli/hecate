@@ -48,6 +48,22 @@ for id in "${ANCILLARY[@]}"; do
     echo "NOTE $id: e-print is not a tarball, left as-is in papers/src/"
 done
 
+# He-Hubeny-Rota ray data, pinned to the snapshot all results were computed
+# against (see README "Data & references")
+ROTA_COMMIT="e973df6e0aa6d1c8e551b13f1998defdd24e2686"
+if [[ ! -s data/raw/rota/n6_rays.txt ]]; then
+  echo "DATA rota extreme-ray repository @ ${ROTA_COMMIT:0:12}"
+  tmp=$(mktemp -d)
+  git clone -q https://github.com/Max-Rota/SSA-compatible-Extreme-Rays-of-the-Subadditivity-Cone "$tmp" \
+    && git -C "$tmp" checkout -q "$ROTA_COMMIT" \
+    && mkdir -p data/raw/rota \
+    && cp "$tmp"/n=6/rays.txt data/raw/rota/n6_rays.txt \
+    && cp "$tmp"/n=5/rays.txt data/raw/rota/n5_rays.txt \
+    && cp "$tmp"/README.md data/raw/rota/ \
+    || { echo "FAIL rota data"; fail=1; }
+  rm -rf "$tmp"
+fi
+
 echo "--- summary ---"
 ls -la papers/*.pdf 2>/dev/null | awk '{print $5, $9}'
 for id in "${ANCILLARY[@]}"; do

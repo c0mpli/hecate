@@ -34,12 +34,18 @@ def test_checker_rejects_non_lipschitz():
 
 def test_false_inequality_has_no_map():
     # S(A) + S(B) >= S(A) + S(B) + S(AB) is false; no contraction map exists
+    import pytest
+
     bogus = Inequality("bogus", {"A": 1, "B": 1}, {"A": 1, "B": 1, "AB": 1}, 2)
     assert find_contraction_bruteforce(bogus) is None
+    pytest.importorskip("ortools")
     assert find_contraction_cpsat(bogus, time_limit_s=10) is None
 
 
 def test_cpsat_proves_qcyclic():
+    import pytest
+
+    pytest.importorskip("ortools")
     q = Inequality(
         "QCyclic",
         {"ABC": 1, "ABD": 1, "ACE": 1, "BDE": 1, "CDE": 1},

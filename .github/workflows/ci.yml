@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: nauty headers (for pynauty)
+        run: sudo apt-get update -q && sudo apt-get install -y -q libnauty2-dev
+      - name: install
+        run: |
+          python -m pip install -q --upgrade pip
+          pip install -q -e '.[dev]' sympy scipy numpy python-igraph ortools
+          CFLAGS="-I/usr/include/nauty" pip install -q pynauty \
+            || echo "pynauty unavailable — canon tests will skip"
+      - name: tests
+        run: pytest -q

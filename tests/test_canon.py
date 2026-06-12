@@ -3,6 +3,9 @@
 import random
 
 import networkx as nx
+import pytest
+
+pytest.importorskip("pynauty")  # graph keys need nauty; skip cleanly without
 
 from hec.canon import graph_key, vector_key
 from hec.entropy import PURIFIER, entropy_vector

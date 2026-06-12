@@ -8,3 +8,5 @@ papers/
 data/raw/
 # generated certificates are committed deliberately, never bulk
 reports/*.tmp
+build/
+dist/

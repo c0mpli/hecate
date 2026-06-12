@@ -1,5 +1,8 @@
 # HECATE — Holographic Entropy Cone Analysis & Theorem Engine
 
+[![CI](https://github.com/c0mpli/hecate/actions/workflows/ci.yml/badge.svg)](https://github.com/c0mpli/hecate/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Named for the goddess of boundaries and crossroads — fitting for an engine
 that maps the boundary of which entanglement patterns can be geometry.
 
@@ -15,7 +18,7 @@ the search loops to attack the open n=6 frontier. Full plan:
 |-----------|-------|
 | M0 prereqs + env | **done** — engine hand-verified on star/cycle graphs |
 | M1 engine + cone tools | **done** — 10⁶ graphs zero violations (40s); 5-party cone (P2) reproduced exactly incl. Normaliz facet↔ray duality (2267 rays) |
-| M2 prover + canonicalization | **done** — MMI re-derived; CP-SAT proves 5/6 nontrivial C5 orbits; Q3: weighted-cube map proven impossible, expanded-cube search needs the 2403.13283 algorithm (next) |
+| M2 prover + canonicalization | **done** — MMI re-derived; CP-SAT proves 5/6 nontrivial C5 orbits (Q3: map requires the unit-expanded cube — pending, via arXiv:2403.13283) |
 | P3 reproduction | **done** — all 208 six-party orbits re-verified (extreme rank-62, SSA-compatible); 52-violator index set == the paper's published list |
 | M3 the hunt | **engine live** — 6 mystery targets extracted & validated (`data/targets/`); LP cut-assignment realizer independently realizes **13/19** C5 rays with exact certificates; mystery runs logged in `reports/` |
 
@@ -51,6 +54,31 @@ uv pip install -p .venv/bin/python '.[search]'         # igraph, ortools, numpy
 .venv/bin/python -m pytest                              # ground-truth tests
 .venv/bin/python scripts/day1_mmi.py --count 10000      # the Day-1 assertion
 ```
+
+## Data & references
+
+Results in this repo are computed against, and verified to reproduce, the
+following sources:
+
+- **arXiv:1505.07839** (Bao–Nezami–Ooguri–Stoica–Sully–Walter) — the graph-model
+  theorem and contraction-map proof method this entire toolkit is built on.
+- **arXiv:1903.09148** (Hernández Cuenca) — the 5-party cone; Tables 1–2
+  transcribed in `hec/c5_data.py` and re-verified here (372 facets ↔ 2,267
+  extreme rays, including an independent Normaliz double-description run).
+- **arXiv:2309.06296** (Czech–Dong–Hernández Cuenca et al.) — the 1,877 known
+  6-party holographic entropy inequalities; loaded from the paper's arXiv
+  ancillary files (`HEIvectors.txt`).
+- **arXiv:2412.15364** (He–Hubeny–Rota) — the 208 SSA-compatible extreme-ray
+  orbits of the 6-party subadditivity cone; full classification re-verified
+  here. Ray data from the authors' repository
+  [Max-Rota/SSA-compatible-Extreme-Rays-of-the-Subadditivity-Cone](https://github.com/Max-Rota/SSA-compatible-Extreme-Rays-of-the-Subadditivity-Cone)
+  (DOI: 10.5281/zenodo.14983856), **pinned at commit `e973df6e0aa6`** —
+  `scripts/fetch_papers.sh` clones exactly that snapshot.
+- Methods arc for the prover: arXiv:2403.13283 → 2409.17317 → 2506.18086
+  (contraction-map algorithmics and completeness).
+
+The distilled T1 targets (`data/targets/mystery_orbits.json`) ship in-repo
+with provenance and validation steps recorded in the file itself.
 
 ## Conventions
 
