@@ -3,6 +3,51 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 6: items 4–6 (HLO verify / oracle / minimize) → v0.2.0
+
+**Item 4 — independent verification of arXiv:2601.19979, all three EXACT.**
+Their conventions decoded from the repo source (complete-graph weights, lex
+pair order, parties = vertices 0–5, purifier = N−1): repo pinned at
+`193d994c8b3a`. The paper's explicit edge lists for s ∈ {146, 180, 181}
+transcribed into `hec/hlo_data.py` and verified in exact arithmetic:
+**S = 12×, 12×, 9× the target rays respectively.** Topology classes
+recorded: all three are simple (one boundary vertex per party) and CYCLIC —
+the chordality tripwire is clean (a verifying simple forest would have
+contradicted the theorem; none did). Their mask-order targets equal ours
+component-by-component — the two data lineages agree.
+
+Nuance worth knowing: the REPO's ray-146 artifact is float-only (cosine
+0.9999999938, "near-perfect"); the PAPER has an exact integer model found by
+hand from the RL output. Before reading the paper closely we independently
+ran LP weight-recovery on the float support and obtained an exact
+realization with **27 edges (vs the paper's 36)** — not a novelty (the paper
+got exactness first) but an independent confirmation by a different method,
+and a sparser model (`reports/realizations/n6_s146_EXACT.json`).
+
+**Item 5 — oracle treatment at n=6: 3/3 recovered.** Weights stripped from
+the verified topologies, fit_weights recovers exact weights: s=180 attempt
+1 (3 s), s=181 attempt 5 (15 s), s=146-support attempt 9 (31 s). The LP
+realizer is calibrated at n=6 on real frontier targets: given the right
+topology it closes quickly — consistent with the Sparse Oracle Principle.
+
+**Item 6 — minimization pass (greedy bulk-deletion + LP refit; upper
+bounds only, no minimality claims):** s=146: **10 internal vertices**
+(paper: 11; 27 edges). s=180: 7 (no reduction; paper's 7 stands). s=181:
+**7 internal vertices** (paper: 10; 22 edges vs their 29 — three vertices
+and seven edges lighter). Exact certificates:
+`reports/realizations/n6_s{146,180,181}_minimal.json`.
+
+**Item 7 — status fields:** `data/targets/mystery_orbits.json` now carries
+per-orbit status ({146, 180, 181} realized + verified; {110, 145, 168} open,
+non-realizability conjectured) and the HLO provenance pin. README M3 row
+and Data & references updated with the explicit commit hash.
+
+**Paper context recorded:** HLO's evidence for non-realizability of
+{110, 145, 168} is reward-landscape adjacency (surrounded by HEI-violating
+rays) + RL failure to 13 internal vertices; they note the Avis–Cuenca
+finiteness bound for n=6 is 1,422,564 vertices — exhaustion is not a
+practical exclusion route; a separating HEI is.
+
 ## 2026-06-12 — Session 5 addendum 2: rung-1 oracles, N6er cross-ref, gate survey
 
 **Rung-1 oracle set, mostly DERIVED rather than transcribed:** the labeled

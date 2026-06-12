@@ -1,5 +1,5 @@
 {
-  "what": "the 6 unresolved ('mystery') extreme-ray orbits at n=6 \u2014 T1 targets",
+  "what": "the 6 'mystery' extreme-ray orbits at n=6 (status per orbit below)",
   "source": "arXiv:2412.15364 (He-Hubeny-Rota); vectors from the paper's data repo github.com/Max-Rota/SSA-compatible-Extreme-Rays-of-the-Subadditivity-Cone, n=6/rays.txt rows s (1-indexed)",
   "ordering": "63 components, subsets of {A..F} sorted by (size, lex); last component = S(ABCDEF) = purifier entropy",
   "verified": "each is an extreme ray of the 6-party SA cone (saturated rank 62), SSA-compatible, and violates none of the 1877 known HEIs (arXiv:2309.06296) \u2014 rechecked exactly by scripts/verify_er6.py",
@@ -394,5 +394,14 @@
       5,
       3
     ]
-  }
+  },
+  "status": {
+    "146": "REALIZED \u2014 graph in arXiv:2601.19979 (RL); independently verified exact here (scale 12; hec/hlo_data.py); also LP weight-recovery on their support gives a 27-edge exact model",
+    "180": "REALIZED \u2014 graph in arXiv:2601.19979; independently verified exact (scale 12)",
+    "181": "REALIZED \u2014 graph in arXiv:2601.19979; independently verified exact (scale 9)",
+    "110": "OPEN \u2014 non-realizability conjectured (resisted RL to 13 internal vertices, arXiv:2601.19979; fails chordality: no simple forest exists)",
+    "145": "OPEN \u2014 non-realizability conjectured (same evidence class as 110)",
+    "168": "OPEN \u2014 non-realizability conjectured (same evidence class as 110)"
+  },
+  "hlo_provenance": "github.com/Jaeha0526/EntropyCone_RL @ 193d994c8b3a2924a49ffb0f69ce7b0042f97108; paper arXiv:2601.19979"
 }

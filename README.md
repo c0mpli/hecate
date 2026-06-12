@@ -21,7 +21,7 @@ the search loops to attack the open n=6 frontier. Full plan:
 | M2 prover + canonicalization | **done** — MMI re-derived; CP-SAT proves 5/6 nontrivial C5 orbits (Q3: map requires the unit-expanded cube — pending, via arXiv:2403.13283) |
 | P3 reproduction | **done** — all 208 six-party orbits re-verified (extreme rank-62, SSA-compatible); 52-violator index set == the paper's published list |
 | C5 ground truth | **done** — all 19 published graph models transcribed & exactly verified (`hec/c5_graphs.py`); **19/19 ray realizations certified** in `reports/realizations/`: 16 fully independent (13 LP-cold + 3 annealed) and 3 *second-tier* (rays 10, 12, 19) — second-tier means the topology comes from the published figure while the weights are independently re-derived by LP, with the certificate verified exactly like any other; derived split-tree oracles for 8/10 non-chordal rays |
-| M3 the hunt | **reframed by the field** — {146, 180, 181} were realized via RL search in arXiv:2601.19979 (our independent verification: queued, next session); {110, 145, 168} remain open with non-realizability conjectured. All six fail the chordality gate: no simple-forest model exists for any of them (theorem, arXiv:2512.24490). The campaign on the suspects is two-track: (A) realization search over non-simple trees and cyclic graphs (slack-guided topology annealing), and (B) a separating-inequality hunt; absence-of-realization from annealing is never treated as evidence — exclusion claims come only from exclusion-grade machinery (bounded exhaustion of chordal fine-grainings) |
+| M3 the hunt | **reframed by the field** — {146, 180, 181} were realized via RL search in arXiv:2601.19979 (our independent verification: **done — all three exact**, scales 12/12/9, all simple-but-cyclic as chordality requires; `hec/hlo_data.py`); {110, 145, 168} remain open with non-realizability conjectured. All six fail the chordality gate: no simple-forest model exists for any of them (theorem, arXiv:2512.24490). The campaign on the suspects is two-track: (A) realization search over non-simple trees and cyclic graphs (slack-guided topology annealing), and (B) a separating-inequality hunt; absence-of-realization from annealing is never treated as evidence — exclusion claims come only from exclusion-grade machinery (bounded exhaustion of chordal fine-grainings) |
 
 ## Layout
 
@@ -96,9 +96,11 @@ following sources:
   sufficient (the iff-gate in `hec/chordality.py`).
 - **arXiv:2601.19979** (He–Lee–Ooguri) — RL realization of mystery orbits
   {146, 180, 181}; code at
-  [Jaeha0526/EntropyCone_RL](https://github.com/Jaeha0526/EntropyCone_RL).
-  Our independent verification of their graphs is queued; their data will be
-  pinned at a specific commit when pulled.
+  [Jaeha0526/EntropyCone_RL](https://github.com/Jaeha0526/EntropyCone_RL),
+  **pinned at commit `193d994c8b3a`**. Their three published edge lists are
+  transcribed in `hec/hlo_data.py` and verified exactly here
+  (`tests/test_hlo.py`); certificates and reduced models in
+  `reports/realizations/`.
 
 The distilled T1 targets (`data/targets/mystery_orbits.json`) ship in-repo
 with provenance and validation steps recorded in the file itself.
