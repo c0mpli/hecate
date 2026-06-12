@@ -1,10 +1,13 @@
-# hec — holographic entropy cone toolkit
+# HECATE — Holographic Entropy Cone Analysis & Theorem Engine
 
-Mapping which patterns of entanglement can be geometry. The holographic
-entropy cone reduces to graph combinatorics (BNOSSW, arXiv:1505.07839):
-an entropy vector is holographic iff some weighted graph realizes it via
-min-cuts. This repo builds the engine, the verifiers, and the search loops
-to attack the open n=6 frontier. Full plan: [SPEC.md](SPEC.md).
+Named for the goddess of boundaries and crossroads — fitting for an engine
+that maps the boundary of which entanglement patterns can be geometry.
+
+The holographic entropy cone reduces to graph combinatorics (BNOSSW,
+arXiv:1505.07839): an entropy vector is holographic iff some weighted graph
+realizes it via min-cuts. This repo builds the engine, the verifiers, and
+the search loops to attack the open n=6 frontier. Full plan:
+[SPEC.md](SPEC.md). The Python package keeps the short import name `hec`.
 
 ## Status
 

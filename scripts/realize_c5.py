@@ -75,12 +75,14 @@ def main():
             print(f"ray {idx:2d}: not found ({dt:.0f}s) — no claim, v1 heuristic only")
             continue
         found.append(idx)
+        verts = {x for u, v, _ in hit["edges"] for x in (u, v)}
         cert = {
             "what": f"graph model independently realizing 5-party extreme ray {idx}",
             "ray": list(C5_EXTREME_RAYS[idx - 1]),
             "ordering": "(size, lex), purifier = O vertex",
             "scale": hit["scale"],
             "edges": hit["edges"],
+            "cyclomatic": len(hit["edges"]) - len(verts) + 1,  # 0 = tree (T2 angle)
             "verify": "hec.entropy.entropy_vector(G, 5) == scale * ray",
         }
         (OUT / f"c5_ray{idx:02d}.json").write_text(json.dumps(cert, indent=2))
