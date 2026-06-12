@@ -28,6 +28,13 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MYSTERY = [110, 145, 146, 168, 180, 181]  # 1-indexed (paper's s labels)
+# the paper's explicit list of HEI-violating orbits (§5.1, arXiv:2412.15364)
+PAPER_VIOLATORS = {
+    71, 108, 118, 124, 126, 132, 133, 140, 141, 142, 143, 144, 148, 150,
+    153, 154, 158, 160, 162, 163, 164, 165, 166, 167, 173, 174, 175, 176,
+    177, 178, 179, 182, 183, 184, 185, 186, 187, 188, 191, 192, 193, 194,
+    197, 198, 199, 200, 201, 202, 203, 204, 205, 208,
+}
 
 _ctx = {}
 
@@ -96,6 +103,13 @@ def main():
         (violators if (imgs @ H < 0).any() else clean).append(idx)
     print(f"[d] HEI violators (all instances): {len(violators)} orbits; "
           f"clean: {len(clean)} ({time.perf_counter() - t1:.1f}s)")
+    assert set(violators) == PAPER_VIOLATORS, (
+        f"violator index SET differs from the paper's published list: "
+        f"extra {sorted(set(violators) - PAPER_VIOLATORS)}, "
+        f"missing {sorted(PAPER_VIOLATORS - set(violators))}"
+    )
+    print("    violator index set == the paper's published s-list "
+          "(row order of rays.txt confirmed aligned with the paper)")
     assert len(violators) == 52, f"paper says 52 violators, got {len(violators)}"
     missing = [s for s in MYSTERY if s not in clean]
     assert not missing, f"mystery orbits violating HEIs?! {missing}"

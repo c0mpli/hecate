@@ -227,7 +227,7 @@ def _hub_topology(n, rng, hubs):
 def sample_topology(n, rng):
     roll = rng.random()
     if roll < 0.40:
-        return _complete_topology(n, rng.randint(1, 4))
+        return _complete_topology(n, rng.randint(1, 6))
     if roll < 0.60:
         return _hub_topology(n, rng, rng.randint(1, 3))
     G = random_tree(n, rng, n_bulk=rng.randint(0, 5), wmax=4)
@@ -251,7 +251,7 @@ def lp_realize_target(target, n, rng, attempts=60, descents=40):
     from hec.realize import _score  # cheap integer L1 objective for the climb
 
     tgt = target if isinstance(target, dict) else vector_from_paper(target, n)
-    deterministic = [_complete_topology(n, b) for b in (1, 2, 3)]
+    deterministic = [_complete_topology(n, b) for b in (1, 2, 3, 4, 5)]
     for a in range(attempts):
         G0 = deterministic[a] if a < len(deterministic) else sample_topology(n, rng)
         warm = a >= len(deterministic) and a % 3 == 0

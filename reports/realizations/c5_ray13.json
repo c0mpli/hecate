@@ -1,5 +1,5 @@
 {
-  "what": "graph model independently realizing 5-party extreme ray 5",
+  "what": "graph model independently realizing 5-party extreme ray 13",
   "ray": [
     1,
     1,
@@ -17,58 +17,73 @@
     2,
     2,
     3,
+    2,
     3,
     3,
     3,
     3,
     3,
+    2,
     3,
-    3,
-    3,
-    3,
-    4,
-    4,
-    4,
-    4,
-    4,
-    3
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    1
   ],
   "ordering": "(size, lex), purifier = O vertex",
-  "scale": 1,
+  "scale": 2,
   "edges": [
     [
-      "b0",
-      "b1",
-      3
-    ],
-    [
-      "b0",
-      "2",
-      1
-    ],
-    [
-      "b0",
-      "3",
-      1
-    ],
-    [
-      "b0",
-      "O",
-      3
-    ],
-    [
-      "b1",
       "0",
-      1
+      "b0",
+      2
     ],
     [
-      "b1",
       "1",
+      "b0",
       1
     ],
     [
+      "1",
       "b1",
+      1
+    ],
+    [
+      "2",
+      "b1",
+      2
+    ],
+    [
+      "3",
+      "b0",
+      1
+    ],
+    [
+      "3",
+      "b1",
+      1
+    ],
+    [
       "4",
+      "b1",
+      2
+    ],
+    [
+      "O",
+      "b0",
+      1
+    ],
+    [
+      "O",
+      "b1",
+      1
+    ],
+    [
+      "b0",
+      "b1",
       1
     ]
   ],

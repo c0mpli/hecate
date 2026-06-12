@@ -53,13 +53,17 @@ def main():
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--seed", type=int, default=2026)
     ap.add_argument("--engine", choices=["hill", "lp"], default="hill")
+    ap.add_argument("--only", type=str, default="",
+                    help="comma-separated ray indices (default: all 19)")
     args = ap.parse_args()
 
     from hec.c5_data import C5_EXTREME_RAYS
 
+    only = {int(x) for x in args.only.split(",") if x} or set(range(1, 20))
     tasks = [
         (i, ray, args.restarts, args.moves, args.seed, args.engine)
         for i, ray in enumerate(C5_EXTREME_RAYS, start=1)
+        if i in only
     ]
     with mp.Pool(args.workers) as pool:
         results = pool.map(attempt, tasks)
