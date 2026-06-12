@@ -3,6 +3,55 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 4: published-graph oracles, the generator-gap proof, annealer
+
+**Strategic update (user, supersedes the 6-orbit plan):** the mysteries were
+resolved/attacked in He–Lee–Ooguri (arXiv:2601.19979, Jan 2026; code:
+github.com/Jaeha0526/EntropyCone_RL): s ∈ {146, 180, 181} realized via RL;
+s ∈ {110, 145, 168} resisted RL to 13 internal vertices (evidence, not proof,
+of non-realizability). New plan next session: verify their three graphs in
+the exact engine, oracle-treat their topologies, minimization pass; then race
+(A) exact realization vs (B) separating-HEI hunt on {110, 145, 168}. The
+repo's "6 open mysteries" framing is stale until item 7 of that plan lands.
+
+**The 19 published C5 graphs transcribed and verified** (`hec/c5_graphs.py`,
+`scripts/verify_c5_graphs.py`): 18/19 exact (entropy_vector == scale×ray;
+scales 1–2). Verification caught real transcription traps: figures 10–13
+arrived shuffled from a batched PDF read (adjudicated by matching each
+edge list against all 19 rays); fig 18 has 16 edges (O has degree 3); fig
+19's σ1–σ4 weight-2 edge passes visually *through* O (no σ1–O edge). Tools
+that did the work: orbit-aware matching (one exact vector + 720 index
+permutations), single/double-edit variant search, pool-subset search.
+**Fig 12 still unresolved** (15 unit edges, congested center; exhaustive
+pool search running). Trust nothing that passes near a vertex.
+
+**Oracle-mode diagnosis (the experiment of the session):** on the published
+topologies (weights stripped), `fit_weights` recovered exact weights for ALL
+five testable holdouts in 0–6 s, first or sixth attempt. Verdict:
+**the LP formulation is sound; the cold-search gap was 100% topology
+generation** — and not raw coverage either: complete super-topologies
+contain every needed structure but drown the pin-assignment search; the
+sparse true topologies converge instantly. Random sampling of the sparse
+family also fails (the crown of ray 10 is a ~1e-7 draw). The capability that
+was missing is *structure search with the LP slack as signal*.
+
+**Topology annealer** (`hec/anneal.py`): local moves in the sparse-bulk
+family (re-home/add/delete boundary straps, toggle bulk-bulk edges,
+add/remove bulk vertices), fitness = best slack of a short fit_weights
+probe, plus report mode in lp_realize. Cold results: rays 16, 17, 18
+annealed (16: 15 edges scale 2; 17: 13 edges; 18: 16 edges) →
+**16/19 rays realized fully independently**.
+
+**19/19 certificates in reports/realizations/** — wait, 18/19 until fig 12
+lands: rays 10 and 19 carry second-tier certificates (published topology
+credited to arXiv:1903.09148, weights independently re-derived; engine field
+says so). Ray 12's certificate needs the fig-12 transcription or an
+annealing hit; the pool search continues in the background.
+
+**Next:** the anneal-vs-LP lesson scales to n=6 — the same
+slack-guided structure search is the realization branch for {110, 145, 168},
+seeded near 13 internal vertices per the RL paper's frontier.
+
 ## 2026-06-12 — Session 3: LP realizer, Q3 campaign, HECATE goes public
 
 **Project renamed HECATE** (Holographic Entropy Cone Analysis & Theorem
