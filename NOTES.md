@@ -3,6 +3,60 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 3: LP realizer, Q3 campaign, HECATE goes public
+
+**Project renamed HECATE** (Holographic Entropy Cone Analysis & Theorem
+Engine) and published: https://github.com/c0mpli/hecate — public, MIT, main.
+
+**LP cut-assignment realizer** (`hec/lp_realize.py`, the SPEC §6 engine v2):
+two-phase per topology — slack-LP descent over re-pinned achieving cuts,
+then, at zero slack, hard-equality constraint generation, which is a
+*complete* decision procedure per (topology, pin assignment): pinned cuts
+bound every entropy from above, so each LP round either matches the target
+exactly or produces a violated cut as a new constraint row. Hits are
+integerized (LCM of denominators) and verified against the exact engine
+before being called real. Complete graphs on boundary + k bulk serve as
+super-topologies — the min-Σw objective zeroes edges and discovers sparse
+structure (it found the Bell-pair ray as literally one edge).
+
+**C5 validation: 13/19 ray orbits independently realized** (certificates in
+`reports/realizations/`, each with cyclomatic number for the T2/tree-
+conjecture angle). The LP engine cracked rays 8, 11, 13, 14, 15 — all
+unreachable by the v1 hill-climb (8/19). Notable: minimal-weight solutions
+for 13/15 are *cyclic* two-hub graphs — minimum total weight does not favor
+trees. Open: rays 10, 12, 16, 17, 18, 19 (logged at 300 attempts × seed 777,
+~25 min each, no claim); they're structural cousins of cracked rays — next
+steps are tree-DP cut enumeration and stabilizer-aware pin seeding rather
+than more brute attempts.
+
+**Q3 campaign result (honest ledger):**
+- Weighted cube: contraction map INFEASIBLE (CP-SAT proof, session 2).
+- Unit-expanded cube (L=16, R=18), copy-symmetric class model (8192 count
+  classes) + anchor-distance domain tightening: CP-SAT **UNKNOWN** at the
+  25-minute budget, twice. So Q3 — alone among the eight 5-party orbit
+  representatives — resists naive mechanical proof: exactly the regime the
+  deterministic algorithm of arXiv:2403.13283 was built for. Implementing it
+  is the designed next prover milestone; machinery for the symmetric
+  expanded search (`find_contraction_symmetric_expanded` + independent
+  checker + full-cube edge sweep) is in place and reusable for the many
+  non-unit-coefficient 6-party HEIs.
+
+**P3 chain closed:** computed HEI-violator index set == the paper's
+published 52-element s-list (`verify_er6.py`), which also proves the data
+repo's row order matches the paper's labels — the mystery-target extraction
+now rests on verification, not assumption.
+
+**Paper context for T1** (§5.3 of 2412.15364): the authors note the 6
+mystery orbits may need much more complex graphs OR may violate a yet-
+unknown 6-party HEI — and "it is tempting to speculate that they are indeed
+holographic" (every known non-holographic ER at n=6 violates an n≤5 HEI).
+Both attack directions are live: realization (T1+) and new-facet hunting
+that kills a mystery orbit (T1−/T3 combined — the bigger result if true).
+
+**Mystery pass with the LP engine:** bounded run logged in
+`reports/mystery_attempts.jsonl` (engine=lp, 80 attempts/orbit, seed 4242)
+— see entry below this line for the outcome once it lands.
+
 ## 2026-06-12 — Session 2: M1 + M2 complete, P2 + P3 reproduced, M3 scaffolded
 
 **M1 acceptance.** `verify_engine.py`: 1,000,000 random graphs (igraph fast

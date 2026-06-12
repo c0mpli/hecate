@@ -15,9 +15,9 @@ the search loops to attack the open n=6 frontier. Full plan:
 |-----------|-------|
 | M0 prereqs + env | **done** — engine hand-verified on star/cycle graphs |
 | M1 engine + cone tools | **done** — 10⁶ graphs zero violations (40s); 5-party cone (P2) reproduced exactly incl. Normaliz facet↔ray duality (2267 rays) |
-| M2 prover + canonicalization | **done** — MMI re-derived; CP-SAT proves 5/6 nontrivial C5 orbits (Q3 proven needs unit-expansion); Sym(n+1)+nauty keys |
-| P3 reproduction | **done** — all 208 six-party orbits re-verified (extreme rank-62, SSA-compatible, 52/156 HEI split matches the paper) |
-| M3 the hunt | **scaffolded** — 6 mystery targets extracted & validated (`data/targets/`); realizer v1 independently realizes 8/19 C5 rays; LP cut-assignment engine is next |
+| M2 prover + canonicalization | **done** — MMI re-derived; CP-SAT proves 5/6 nontrivial C5 orbits; Q3: weighted-cube map proven impossible, expanded-cube search needs the 2403.13283 algorithm (next) |
+| P3 reproduction | **done** — all 208 six-party orbits re-verified (extreme rank-62, SSA-compatible); 52-violator index set == the paper's published list |
+| M3 the hunt | **engine live** — 6 mystery targets extracted & validated (`data/targets/`); LP cut-assignment realizer independently realizes **13/19** C5 rays with exact certificates; mystery runs logged in `reports/` |
 
 ## Layout
 
