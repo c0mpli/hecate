@@ -31,12 +31,35 @@ split/merge party copies, regraft), fitness = best fitter slack; optional
 seed from a cyclic graph's boundary-split (the real 111/207 workflow:
 split → break surviving bulk cycle).
 
-**GATE (binding, user policy): the annealer must pass the C5 rays 10-19
-ladder before any 111/207 claim.** From-scratch search missed ray 11 at 200
-iters (its realization needs the purifier split in two — the published graph
-has an O-b1-b2-b3-O cycle); added restarts + split-biased seeding; full
-ladder validation (`scripts/validate_tree_annealer.py`) running. Annealer
-failure is NEVER evidence of unrealizability (that is Track B's job).
+**GATE RESULT: the from-scratch annealer FAILS the ladder — 1/8** (rays
+11-16,18,19; 6 restarts × 500 iters each). Only ray 13 produced anything,
+a valid non-simple FOREST (exact, 2 components — acceptable per 2512.24490).
+The other 7 returned nothing: not a tuning gap but a structural one — blind
+search over labeled-tree space with split/regraft moves doesn't converge,
+because the LP-slack landscape is flat until a topology is almost exactly
+right (the Sparse Oracle Principle cuts the other way here: sparse trees fit
+instantly GIVEN the structure, but finding the structure among all labeled
+trees is the hard part). **Per policy this is NOT evidence about 111/207,
+and the annealer does NOT run on them.** The labeled LP fitter itself is
+sound (oracle-validated 6/6) — only the topology search is weak.
+
+**Track A re-scoped (the honest next build).** Rung-1 EXISTENCE is already
+settled independently of the annealer: boundary-splitting the published
+cyclic models (hec/splits, session 5) gives verified non-simple trees for
+8/10 C5 rays. The annealer added nothing there. The genuinely open
+subproblem is **breaking a SURVIVING bulk cycle** — C5 rays 10, 17 and the
+targets 111, 207, where splitting leaves a pure-bulk cycle. Blind annealing
+can't do it; the right tools are (a) explicit entropy-preserving graph
+operations (Δ-Y exchange + generalizations, arXiv:2204.00075 §gops) applied
+to the cyclic model, or (b) the chordal fine-graining machinery (which is
+also Track B's exclusion engine). Both are real builds, appropriately so —
+this is the exact subproblem the literature flags as hard (HHR: tree
+constructions for bulk-cycle rays "have so far failed"; 2204.00075 left
+N6er3 unresolved). Validation target for whichever tool: C5 ray 10 or 17
+first (trees known to exist via Δ-Y), THEN 111/207.
+
+Status: targets identified + validated, tooling scaffolded, no result
+claimed. The campaign is correctly gated behind the email.
 
 ## 2026-06-12 — Session 7: STEP-0 minimal-claim audit (gates the email)
 
