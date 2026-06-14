@@ -3,6 +3,41 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 7: bulk-cycle pivot (new lead target, T2)
+
+**The 2 bulk-cycle orbits are s=111 and s=207** (arXiv:2412.15364
+§graphERs footnote: their graphs "still each contains a bulk cycle, and it
+would be interesting to see if we can alternatively realize them by tree
+graphs. We leave this for future exploration"). This is the SPEC's T2 and
+the new lead, ahead of the {110,145,168} suspects — self-contained,
+publishable either way, low scoop risk. Saved with provenance to
+`data/targets/bulk_cycle_orbits.json`.
+
+Both validated exactly: SA+SSA, SAC-extreme (rank 62), HEI-clean (0
+violations — they ARE holographic, just cyclic), non-chordal (no simple
+forest — the expected sanity result; a bulk cycle survives boundary
+splitting, unlike rays 11-16/18/19). NOT mystery orbits — these are realized
+holographically; the open question is purely topological (tree vs cycle),
+which bears directly on the strong tree conjecture of arXiv:2204.00075.
+
+**Track A tooling built (`hec/tree_search.py`): party-splitting tree
+annealer.** Non-simple tree = parties may label several leaves, tree
+topology throughout. The LP fitter is pattern-agnostic so we reuse
+lp_realize's slack/hard LPs and add only labeled min-cut patterns +
+labeled exact certification (`entropy_vector_labeled`). **Fitter
+oracle-validated:** recovers exact weights on all six known C5 split-trees
+(11,12,13,16,18,19) in 0-3 s. Annealer = SA over tree space (add/prune bulk,
+split/merge party copies, regraft), fitness = best fitter slack; optional
+seed from a cyclic graph's boundary-split (the real 111/207 workflow:
+split → break surviving bulk cycle).
+
+**GATE (binding, user policy): the annealer must pass the C5 rays 10-19
+ladder before any 111/207 claim.** From-scratch search missed ray 11 at 200
+iters (its realization needs the purifier split in two — the published graph
+has an O-b1-b2-b3-O cycle); added restarts + split-biased seeding; full
+ladder validation (`scripts/validate_tree_annealer.py`) running. Annealer
+failure is NEVER evidence of unrealizability (that is Track B's job).
+
 ## 2026-06-12 — Session 7: STEP-0 minimal-claim audit (gates the email)
 
 **All minimal-model claims CONFIRMED, apples-to-apples** (`scripts/
