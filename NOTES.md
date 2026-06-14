@@ -3,6 +3,52 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 9: hec/cycle_surgery.py — bulk-cycle rays 10/17 CRACKED
+
+**The directed-surgery lever works where all blind search failed.**
+hec/cycle_surgery.py implements the EXACT entropy-preserving graph operations
+of arXiv:2204.00075 §graph-operations: Δ→Y (lem:triop, w_σi=w_ij+w_ik, …),
+its inverse Y→Δ (halves, needs triangle inequalities), series (degree-2 bulk
+→ min edge), parallel (sum), pendant prune, and boundary-vertex split — each
+provably min-cut-preserving AND re-verified exactly (Fraction) after every
+move. Best-first search on cyclomatic number, pynauty-canonical dedup,
+node/depth bounded.
+
+**GATE PASSED — C5 rays 10 and 17.** These are the surviving-bulk-cycle rays
+that the blind annealer (1/8) and the keep/discard search.py (8/10) BOTH
+missed. Surgery turns their cyclic models into **trees**: ray 10 in 10 moves
+(47 nodes, scale 2), ray 17 in 10 moves (28 nodes, scale 1) — independently
+re-verified (forest, exact). The move traces are exactly the "judicious
+iterative Δ-Y" 2204.00075 describes (Δ→Y, Y→Δ, boundary splits interleaved).
+CI test `tests/test_cycle_surgery.py` guards the gate + per-move exactness.
+(C5 trees are known — 2204.00075 fig N5trees — so these are TOOL VALIDATION,
+not novel; certs go to the gitignored surgery_validation/.)
+
+**s=111 — BOUNDED no-reduction (honest, NOT a non-existence claim).** From
+the hecdata cyclic seed (cyclomatic 3), surgery killed 2 of 3 cycles (3→1)
+then stalled. The survivor is a **pure-bulk 4-cycle [x1,x2,x3,x4], all
+vertices degree 4–5** — no bulk triangle (Δ→Y needs one), no degree-3 bulk
+(Y→Δ needs that), boundary-split cannot reach a pure-bulk cycle, and
+bulk-vertex splitting is NOT entropy-preserving (more cut freedom only
+lowers entropies). So the COMPLETE local entropy-preserving move set cannot
+touch this cycle — the genuine hard wall, same class as N6er3 (which
+2204.00075 also left unresolved). Logged to reports/bulk_cycle_attempts.jsonl
+strictly as "no reduction under {move set, bound}, this seed". This is
+IMPORTANT DATA toward 111's realization possibly needing the cycle — to be
+settled by the fine-graining exclusion engine (Track B), or by trying
+alternative cyclic seeds. It is NOT "111 is non-realizable" (it IS
+holographic — it's realized, just with a cycle) and NOT "no tree exists".
+
+**s=207** — no cyclic seed (absent from hecdata; a newer orbit) → skipped
+until a seed exists (e.g. from arXiv:2412.15364 ER_graphs or a fresh
+realization).
+
+**Net:** cycle_surgery.py is validated and is the first tool here to resolve
+the bulk-cycle subclass on the solvable (C5) cases. For the actual n=6
+targets it gives an honest bounded wall on 111's known realization, which
+sharpens the next step: Track B (bounded chordal fine-graining = exclusion-
+grade) or alternative-seed surgery. 111/207 remain correctly unclaimed.
+
 ## 2026-06-12 — Session 8: hec/search.py (autoresearch-shaped keep/discard loop)
 
 **Built `hec/search.py`** — Track A for the bulk-cycle pair s=111/207, in the

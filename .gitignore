@@ -11,3 +11,4 @@ reports/*.tmp
 build/
 dist/
 reports/realizations/c5_ladder_validation/
+reports/realizations/surgery_validation/
