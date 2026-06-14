@@ -3,6 +3,51 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 10: multi-seed 111 experiment (seed-specific vs intrinsic?)
+
+**Question:** is the pure-bulk-4-cycle wall cycle_surgery hit on s=111 a
+property of that ONE realization, or intrinsic to the ray? **Built
+hec/seed_search.py** to test it: generate structurally-distinct cyclic
+realizations of the SAME ray (stabilizer images — relabelings fixing the
+63-vector — plus LP fits on varied topologies; pynauty-deduped, each
+Fraction-verified to realize a multiple of the ray), run surgery on each.
+Added a party-BLIND `structure_key` so symmetry copies are counted as the
+SAME independent structure (not double-counted).
+
+**Machinery validated on C5 ray 10:** 3 distinct seeds generated (base + 2
+stabilizer images), **3/3 reduce to trees**. Tests in test_seed_search.py
+(stabilizer image realizes the same ray exactly; surgery reduces it;
+structure_key collapses symmetry copies).
+
+**111 result — the honest THIRD outcome: INCONCLUSIVE, bounded by seed
+generation.** Not "a seed reduced" (seed-specific) and not "all diverse
+seeds failed" (evidence intrinsic) — instead: **only ONE independent bulk
+structure could be generated at n=6.** hecdata has exactly 1 row in 111's
+orbit (line 294); `lp_realize_target` found 0 realizations of 111 in
+repeated tries (152 s, 0/4); the ray's stabilizer has only 4 elements and
+yields structurally-identical symmetry copies. So the 2 seeds tested span 1
+independent structure. Both: full entropy-preserving move-closure searched
+EXHAUSTIVELY (frontier emptied at 10 nodes), no tree; surviving obstruction
+= the pure-bulk degree-4/5 4-cycle, provably untouchable by the COMPLETE
+local move set.
+
+Interpretation (logged to reports/bulk_cycle_attempts.jsonl, qualified):
+the one reachable realization of 111 is irreducible under all local
+entropy-preserving operations — but with only 1 independent structure
+testable, this does NOT distinguish "intrinsic to the ray" from "shared by
+the one realization we can reach." The cheap seed-diversity test is
+INCONCLUSIVE here precisely because independent n=6 realizations are hard to
+generate — which is itself the signal that the **ray-level fine-graining
+exclusion engine (Track B)** — seed-independent, working from the entropy
+vector rather than a graph — is the tool actually needed to settle 111.
+Explicitly NOT a non-existence claim (111 IS holographic; it's realized,
+just with a cycle). s=207: still no seed.
+
+**Next:** build the fine-graining exclusion engine (chordal fine-grainings
+up to a bound N′; arXiv:2512.18702 §non-chordal) — the principled, seed-
+independent settle for both the bulk-cycle pair and (later) the suspects.
+Still gated behind the SPEC §8 email.
+
 ## 2026-06-12 — Session 9: hec/cycle_surgery.py — bulk-cycle rays 10/17 CRACKED
 
 **The directed-surgery lever works where all blind search failed.**

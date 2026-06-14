@@ -270,11 +270,13 @@ def surgery(seed_G, seed_party, n, name, target=None,
     nodes = 0
     counter = 1
     best = (cyclomatic(G0), 0)
+    best_graph = (G0.copy(), dict(party0))
     while heap and nodes < max_nodes:
         kap, _, depth, _, G, party, trail = heapq.heappop(heap)
         nodes += 1
         if kap < best[0]:
             best = (kap, depth)
+            best_graph = (G.copy(), dict(party))
         allow_yd = depth < y_delta_depth
         for H, p, desc in all_breaking_moves(G, party, n, allow_yd):
             Hn = normalize(H, p)
@@ -297,7 +299,36 @@ def surgery(seed_G, seed_party, n, name, target=None,
         f"best cyclomatic reached={best[0]}). BOUNDED result — NOT a proof that "
         f"no tree realization exists.")
     return None, {"status": "no_reduction", "nodes": nodes,
-                  "best_cyclomatic": best[0], "max_depth": max_depth}
+                  "best_cyclomatic": best[0], "max_depth": max_depth,
+                  "_best_graph": best_graph}
+
+
+def characterize_obstruction(G, party):
+    """Describe the surviving cycle(s) of a stuck graph and why each move type
+    is inapplicable — honest, structured obstruction data (no claims)."""
+    cycles = nx.cycle_basis(G)
+    out = []
+    for cyc in cycles:
+        bulk = [v for v in cyc if is_bulk(v, party)]
+        bdry = [v for v in cyc if not is_bulk(v, party)]
+        degs = {str(v): G.degree(v) for v in cyc}
+        pure_bulk = len(bdry) == 0
+        has_tri = len(cyc) == 3
+        deg3_bulk = [v for v in bulk if G.degree(v) == 3]
+        out.append({
+            "length": len(cyc),
+            "vertices": [str(v) for v in cyc],
+            "degrees": degs,
+            "pure_bulk": pure_bulk,
+            "delta_y_applicable": has_tri,
+            "y_delta_candidates": [str(v) for v in deg3_bulk],
+            "boundary_split_reachable": len(bdry) > 0,
+            "why_stuck": ("pure-bulk cycle, no triangle, no degree-3 bulk vertex; "
+                          "local entropy-preserving moves inapplicable"
+                          if pure_bulk and not has_tri and not deg3_bulk
+                          else "see flags"),
+        })
+    return out
 
 
 def _emit(name, n, G, party, tgt, trail, out_dir, log):
