@@ -3,6 +3,36 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 7: STEP-0 minimal-claim audit (gates the email)
+
+**All minimal-model claims CONFIRMED, apples-to-apples** (`scripts/
+verify_minimal_claims.py`, now CI-guarded in `tests/test_hlo.py`). Internal
+vertex ≝ nonzero-degree non-boundary vertex; edge ≝ nonzero-weight edge —
+identical definition for paper and ours. Figure 7 of arXiv:2601.19979
+(`graph_realizations2.png`) independently confirms the paper baselines:
+146 shows internal vertices 1–11, 180 shows 1–7, 181 shows 1–10.
+
+| ray | paper (edges / internal / scale) | ours (edges / internal / scale) |
+|-----|----------------------------------|---------------------------------|
+| 146 | 36 / 11 / 12 | **27 / 10 / 1** |
+| 180 | 25 / 7 / 12  | 25 / 7 (no reduction) |
+| 181 | 29 / 10 / 9  | **22 / 7 / 1** |
+
+All exact, all simple-but-cyclic. Note the scale: our models realize the
+ray at scale 1 (integer weights), the paper's at 12/12/9 — same extreme ray
+(defined up to positive scaling), ours strictly smaller in vertices, edges,
+AND weights. Honest email phrasing: "a smaller graph realizing the same
+ray" — never imply the paper's is wrong (it isn't; minimization wasn't their
+goal). 181's N=18 is the RL vertex budget; its realized graph uses 10
+internal (one budget vertex unused) — we compare against realized counts.
+
+**Caught in QA, not in the claim:** the first audit run reported our models
+as non-realizing — a bug in the *checker*: certificates serialize vertices
+via `str()`, so parties become "0".."5"; rebuilding without mapping them
+back to int left the parties isolated. The stored models were always exact
+(written through `_certify`). Lesson: when a verifier rebuilds a graph from
+serialized data, normalize labels before trusting a mismatch.
+
 ## 2026-06-12 — Session 6: items 4–6 (HLO verify / oracle / minimize) → v0.2.0
 
 **Item 4 — independent verification of arXiv:2601.19979, all three EXACT.**
