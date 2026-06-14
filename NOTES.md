@@ -3,6 +3,71 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-12 — Session 8: hec/search.py (autoresearch-shaped keep/discard loop)
+
+**Built `hec/search.py`** — Track A for the bulk-cycle pair s=111/207, in the
+karpathy/autoresearch keep/discard SHAPE (no neural net): mutated artifact =
+a candidate graph; the "metric" = our EXACT LP fitter + ray-match; program.md
+= the `POLICY` dict at the top (the one place a human edits); keep-if-improved
+= keep-if-lower-score with an exact success gate. Hard rules enforced in code:
+floats only rank, Fraction-exact certifies; SUCCESS writes a self-certifying
+cert with the realized 63-vector; FAILURE logs only "no tree found under
+<policy, budget>", never "no tree exists".
+
+**The design fix over the failed blind annealer (1/8):** seed from a graph
+that ALREADY realizes the ray (a published cyclic model) and walk
+entropy-preserving moves (Δ-Y, vertex/purifier splits, edge removal) that
+reduce the cyclomatic number, the LP fitter re-certifying realization each
+step. Score = 100·κ(certified graph) if realizing, else 1000+slack; SUCCESS =
+realizing AND κ=0 (forest). Stays on the realizes-the-ray manifold, drives
+cycles → 0. Crucially, the LP may zero out a cycle edge, so the certified
+(pruned) graph can be a forest even when the search topology wasn't — a free
+win path.
+
+**Real Δ-Y seed for s=111 obtained** (`scripts/extract_bulk_seeds.py`):
+matched 111's Sym(7) orbit against the 4144 HEC6 graph models in the hecdata
+repo (SergioHC95) — line 294 — relabeled to our representative and verified
+exact (`data/targets/bulk_cycle_seeds.json`). s=207 is NOT in hecdata (likely
+one of He-Hubeny-Rota's 25 NEW orbits, post-dating that repo) → falls back to
+random seeds, flagged. (Parse bug caught: hecdata uses an explicit "O"
+purifier vertex in 4126/4145 graphs; my first regex char class omitted "O"
+and silently dropped every purifier edge → zero matches. Fixed.)
+
+**LADDER GATE (binding): C5 rays 10-19 — RESULT: 8/10, but the 2 misses
+are the decisive ones.** `scripts/search_ladder.py`. Trees found for
+11,12,13,14,15,16,18,19 (all 8 BOUNDARY-cycle rays — those whose cycles a
+boundary split removes); MISSED 10 and 17 (the 2 rays whose BULK cycle
+survives splitting) within a 6000-iter / 700 s budget. A 5× improvement over
+the blind annealer's 1/8, and the loop reliably does boundary-cycle → tree.
+
+**But this does NOT clear the gate for 111/207.** Rays 10 and 17 are the
+exact analogues of the targets: 111/207 also have surviving BULK cycles, and
+the loop failed precisely the bulk-cycle subclass (0/2). So per policy the
+loop does NOT run on 111/207 with any claim — the same discipline that
+halted tree_search.py. The gap is the unchanged hard core: breaking a
+pure-bulk cycle needs a Δ-Y / bulk-split sequence the keep/discard search
+doesn't reliably find within budget, even though its move set includes them.
+The next lever is targeted bulk-cycle surgery (enumerate Δ-Y on each bulk
+3-cycle; for longer bulk cycles, chord-then-Δ-Y), or the fine-graining
+machinery — NOT more blind iterations.
+
+Found bugs en route (both fixed): (1) the verifier discarded a candidate's
+own realizing weights and re-fit from scratch — added a current-weights fast
+path so seeds / entropy-preserving moves are recognized exactly and cheaply;
+(2) restarts picked uniformly among 4 seeds, diluting the single realizing
+cyclic seed 3:1 with useless random trees — ray 11 missed at 701 s under one
+RNG yet solved in 4 candidates under another. Biasing restarts to cyclic
+seeds + best-realizing-so-far fixed it (ray 11 then solved under the failing
+RNG in 255 candidates). Smoke + CI test (`tests/test_search.py`) guard the
+loop end-to-end; every found tree is exact-certified and the C5 ones were
+independently re-verified (forest, exact, scale 1).
+
+**Net for the campaign:** hec/search.py is a real, validated tool for
+boundary-cycle tree realization (8/8) and a scaffold for the bulk-cycle case,
+but it is NOT yet validated where it counts (bulk cycles, 0/2). 111/207
+remain correctly untouched, gated behind both the bulk-cycle capability and
+the email.
+
 ## 2026-06-12 — Session 7: bulk-cycle pivot (new lead target, T2)
 
 **The 2 bulk-cycle orbits are s=111 and s=207** (arXiv:2412.15364

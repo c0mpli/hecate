@@ -1,0 +1,78 @@
+{
+  "what": "published cyclic graph realizations for the bulk-cycle orbits, relabeled to our representatives and exactly verified; \u0394-Y seeds for hec.search",
+  "source": "github.com/SergioHC95/Holographic-Entropy-Cone n=6/graphs.txt, matched by Sym(7) orbit",
+  "seeds": {
+    "111": {
+      "edges": [
+        [
+          "0",
+          "x1",
+          1
+        ],
+        [
+          "1",
+          "x1",
+          1
+        ],
+        [
+          "2",
+          "x2",
+          2
+        ],
+        [
+          "3",
+          "x3",
+          2
+        ],
+        [
+          "4",
+          "x2",
+          1
+        ],
+        [
+          "4",
+          "x4",
+          1
+        ],
+        [
+          "5",
+          "x3",
+          1
+        ],
+        [
+          "5",
+          "x4",
+          1
+        ],
+        [
+          "O",
+          "x4",
+          2
+        ],
+        [
+          "x1",
+          "x2",
+          1
+        ],
+        [
+          "x1",
+          "x4",
+          1
+        ],
+        [
+          "x2",
+          "x3",
+          2
+        ],
+        [
+          "x3",
+          "x4",
+          1
+        ]
+      ],
+      "scale": 1,
+      "cyclomatic": 3,
+      "hecdata_line": 294
+    }
+  }
+}
