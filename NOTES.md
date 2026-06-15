@@ -3,6 +3,67 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-15 — Session 14: hec/obstruction_search.py — cheap LP-free test of whether s=111 is SPECIAL or just HARD → it's ORDINARY (no separator)
+
+**Flipped the question.** Instead of searching (and failing) for a tree
+realization of the bulk-cycle orbit s=111, asked whether any cheap, LP-free
+vector/structural INVARIANT separates 111 from every ray KNOWN to be
+tree-realizable. A separator would be a REASON (a candidate obstruction → a
+possible strong-tree-conjecture counterexample); no separator is evidence 111
+is an ordinary tree-realizable ray the search was merely too slow to crack.
+`hec/obstruction_search.py` + `tests/test_obstruction_search.py`; report in
+`reports/obstruction_search.{json,md}`. Reproduce: `.venv/bin/python -m
+hec.obstruction_search`. Uncommitted (held for review, per the session-11→13
+pattern).
+
+**KEY FINDING that reshaped the control — chordality is the "bulk-cycle TRAP",
+quantified: 104 of the 148 tree-realizable n=6 orbits are THEMSELVES
+non-chordal.** So the chordality criterion (simple-forest iff) does NOT
+distinguish tree-realizable from not at n=6 — most tree-realizable rays need
+NON-simple trees. This means the honest control cohort for 111 is not just the
+two n=5 rays 10/17 but a **104-strong, same-n, non-chordal-but-tree-realizable**
+set. The prompt's warned-against confound ("invariant just detects has-a-cycle")
+is therefore real and measurable: any invariant flagging 111 must NOT flag those
+104 (or 10/17).
+
+**RESULT — NO cheap invariant separates s=111.** A 21-invariant battery across
+the four requested families (correlation-hypergraph/line-graph shape;
+cut-value/saturation profile; PMI/independence; clique/hole structure), all
+exact integer/graph-structural, no LP, no weight fit. On EVERY non-degenerate
+invariant s=111 lies INSIDE the cohort range; across the 17 discriminating
+same-n invariants it sits at **percentiles 27–91** of the 104 tree-realizable
+rays — strictly interior, usually near the median (e.g. induced-4-hole count
+111=6 vs cohort mean 6.12; hole density 0.111 vs mean 0.119). The C5 controls
+10/17 are inside every n-agnostic range (control passes). **Verdict: 111 looks
+like an ORDINARY non-chordal tree-realizable ray — evidence it is merely HARD,
+not a structural counterexample. Points back to the search filter (the angle-1
+filter), NOT to a non-realizability claim.**
+
+**s=207 (secondary): MARGINAL only, honest caveat.** 207 sits just past the
+cohort edge on 3 count-type invariants (42 vs max 40 induced 4-holes; 0.737 vs
+0.714 hole density; 119 vs min 123 SA-saturated). The cohort edge is itself a
+tree-realizable ray, so this is the high-density END of a continuum, not a clean
+gap — weak, single-boundary, and 207 has no studied cyclic seed. NOT a candidate
+obstruction in the strong sense; it does prove the test isn't trivially
+returning "inside" for everything (it discriminates).
+
+**Degenerate invariants surfaced (no signal, flagged transparently):** the
+single-label pairwise MI is uniformly ZERO across this whole family (every
+S(ij)=S(i)+S(j); 21/21 vanishing at n=6), so the coarsest PMI layer and
+"independent parties" carry no information — the correlation hypergraph's B-sets
+(over larger subsets) are the right object, and they don't separate either. The
+non-chordal core (simplicial-elimination residue) equals the WHOLE line graph
+for every ray (these hypergraphs are near-cliques, clique# ≈ 50/54), so it too
+is non-discriminating.
+
+**Honesty:** correlation is never proof — no non-realizability claimed from any
+invariant; "no separator" means none in THIS battery, not that none exists;
+111/207 ARE holographic (realized, with a bulk cycle), only the tree question is
+open; suspects {110,145,168} not analyzed; email/README untouched. Two latent
+bugs avoided by validation: optimized exact 4-hole count is regression-tested ==
+brute force; percentile centrality computed within the SAME-n cohort to avoid an
+n-pooling artifact. 8 new tests; full suite 54 green; day-1 regression passes.
+
 ## 2026-06-12 — Session 10: multi-seed 111 experiment (seed-specific vs intrinsic?)
 
 **Question:** is the pure-bulk-4-cycle wall cycle_surgery hit on s=111 a

@@ -1,0 +1,764 @@
+{
+  "what": "Cheap LP-free obstruction search: does any vector/structural invariant separate the bulk-cycle orbit s=111 from all rays known to be tree-realizable? A separator (passing the C5 10/17 control) would be a candidate obstruction to tree-realizability; none means 111 looks like an ordinary, merely-hard tree-realizable ray.",
+  "engine": "hec.obstruction_search (exact integer arithmetic, no LP, no weight fitting)",
+  "reference_set": {
+    "n6_tree_realizable": 148,
+    "n6_tree_realizable_def": "the 156 HEI-clean orbits of arXiv:2412.15364 minus the 6 mystery orbits minus the 2 bulk-cycle orbits {111,207}; the paper realizes these 148 by tree graphs",
+    "c5_all_orbits": 19,
+    "c5_def": "all 19 n=5 extreme-ray orbits (arXiv:1903.09148); every one is tree-realizable (1-9 simple, 10-19 non-simple per arXiv:2204.00075)"
+  },
+  "chordality_census_n6_trees": {
+    "chordal_simple_tree": 44,
+    "nonchordal_nonsimple_tree": 104,
+    "note": "104 of the 148 tree-realizable n=6 orbits are themselves non-chordal -> chordality detects 'bulk cycle', NOT non-realizability; it is the canonical control trap."
+  },
+  "targets": {
+    "111": [
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      4,
+      4,
+      6,
+      6,
+      4,
+      4,
+      6,
+      6,
+      6,
+      6,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      5,
+      4,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      2
+    ],
+    "207": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      2,
+      2,
+      3,
+      3,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      1
+    ]
+  },
+  "controls": {
+    "c5_10": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      3,
+      2,
+      3,
+      3,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      1
+    ],
+    "c5_17": [
+      2,
+      2,
+      2,
+      2,
+      3,
+      4,
+      4,
+      4,
+      5,
+      4,
+      4,
+      5,
+      4,
+      5,
+      5,
+      4,
+      6,
+      5,
+      6,
+      7,
+      5,
+      6,
+      7,
+      7,
+      7,
+      6,
+      5,
+      5,
+      5,
+      5,
+      3
+    ],
+    "role": "confirmed tree-realizable (non-simple) AND non-chordal \u2014 the n=5 analogue of 111; an obstruction must NOT flag these."
+  },
+  "invariant_table": {
+    "chordal": {
+      "n_agnostic": true,
+      "cohort_size": 114,
+      "cohort_min": 0,
+      "cohort_max": 0,
+      "cohort_mean": 0.0,
+      "degenerate": true,
+      "n6_constant": true,
+      "control_c5_10": 0,
+      "control_c5_17": 0,
+      "control_inside": true,
+      "targets": {
+        "111": {
+          "value": 0,
+          "separates": false,
+          "percentile": 100.0
+        },
+        "207": {
+          "value": 0,
+          "separates": false,
+          "percentile": 100.0
+        }
+      }
+    },
+    "n_hyperedges": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 41,
+      "cohort_max": 58,
+      "cohort_mean": 53.50961538461539,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 28,
+      "control_c5_17": 30,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 54,
+          "separates": false,
+          "percentile": 59.6
+        },
+        "207": {
+          "value": 57,
+          "separates": false,
+          "percentile": 92.3
+        }
+      }
+    },
+    "lg_density": {
+      "n_agnostic": true,
+      "cohort_size": 114,
+      "cohort_min": 0.9899193548387096,
+      "cohort_max": 0.9987900786448881,
+      "cohort_mean": 0.9965441747058238,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 0.9920634920634921,
+      "control_c5_17": 0.993103448275862,
+      "control_inside": true,
+      "targets": {
+        "111": {
+          "value": 0.9972047519217331,
+          "separates": false,
+          "percentile": 53.8
+        },
+        "207": {
+          "value": 0.9912280701754386,
+          "separates": false,
+          "percentile": 0.0
+        }
+      }
+    },
+    "lg_clique_number": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 39,
+      "cohort_max": 56,
+      "cohort_mean": 50.44230769230769,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 25,
+      "control_c5_17": 27,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 50,
+          "separates": false,
+          "percentile": 43.3
+        },
+        "207": {
+          "value": 50,
+          "separates": false,
+          "percentile": 43.3
+        }
+      }
+    },
+    "lg_num_max_cliques": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 4,
+      "cohort_max": 64,
+      "cohort_mean": 9.557692307692308,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 8,
+      "control_c5_17": 8,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 16,
+          "separates": false,
+          "percentile": 91.3
+        },
+        "207": {
+          "value": 29,
+          "separates": false,
+          "percentile": 97.1
+        }
+      }
+    },
+    "lg_cyclomatic": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 778,
+      "cohort_max": 1594,
+      "cohort_mean": 1353.7307692307693,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 348,
+      "control_c5_17": 403,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 1374,
+          "separates": false,
+          "percentile": 46.2
+        },
+        "207": {
+          "value": 1526,
+          "separates": false,
+          "percentile": 79.8
+        }
+      }
+    },
+    "lg_deg_max": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 40,
+      "cohort_max": 57,
+      "cohort_mean": 52.50961538461539,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 27,
+      "control_c5_17": 29,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 53,
+          "separates": false,
+          "percentile": 59.6
+        },
+        "207": {
+          "value": 56,
+          "separates": false,
+          "percentile": 92.3
+        }
+      }
+    },
+    "lg_deg_min": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 39,
+      "cohort_max": 56,
+      "cohort_mean": 50.69230769230769,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 26,
+      "control_c5_17": 28,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 52,
+          "separates": false,
+          "percentile": 67.3
+        },
+        "207": {
+          "value": 53,
+          "separates": false,
+          "percentile": 73.1
+        }
+      }
+    },
+    "shortest_hole": {
+      "n_agnostic": true,
+      "cohort_size": 114,
+      "cohort_min": 4,
+      "cohort_max": 4,
+      "cohort_mean": 4.0,
+      "degenerate": true,
+      "n6_constant": true,
+      "control_c5_10": 4,
+      "control_c5_17": 4,
+      "control_inside": true,
+      "targets": {
+        "111": {
+          "value": 4,
+          "separates": false,
+          "percentile": 100.0
+        },
+        "207": {
+          "value": 4,
+          "separates": false,
+          "percentile": 100.0
+        }
+      }
+    },
+    "n_4holes": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 1,
+      "cohort_max": 40,
+      "cohort_mean": 6.125,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 3,
+      "control_c5_17": 3,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 6,
+          "separates": false,
+          "percentile": 66.3
+        },
+        "207": {
+          "value": 42,
+          "separates": true,
+          "percentile": 100.0
+        }
+      }
+    },
+    "holes_per_hyp": {
+      "n_agnostic": true,
+      "cohort_size": 114,
+      "cohort_min": 0.017241379310344827,
+      "cohort_max": 0.7142857142857143,
+      "cohort_mean": 0.11873174701264026,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 0.10714285714285714,
+      "control_c5_17": 0.1,
+      "control_inside": true,
+      "targets": {
+        "111": {
+          "value": 0.1111111111111111,
+          "separates": false,
+          "percentile": 64.4
+        },
+        "207": {
+          "value": 0.7368421052631579,
+          "separates": true,
+          "percentile": 100.0
+        }
+      }
+    },
+    "core_nodes": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 41,
+      "cohort_max": 58,
+      "cohort_mean": 53.50961538461539,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 28,
+      "control_c5_17": 30,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 54,
+          "separates": false,
+          "percentile": 59.6
+        },
+        "207": {
+          "value": 57,
+          "separates": false,
+          "percentile": 92.3
+        }
+      }
+    },
+    "n_distinct_values": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 3,
+      "cohort_max": 9,
+      "cohort_mean": 6.788461538461538,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 3,
+      "control_c5_17": 6,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 6,
+          "separates": false,
+          "percentile": 38.5
+        },
+        "207": {
+          "value": 3,
+          "separates": false,
+          "percentile": 1.9
+        }
+      }
+    },
+    "max_value": {
+      "n_agnostic": true,
+      "cohort_size": 114,
+      "cohort_min": 3,
+      "cohort_max": 10,
+      "cohort_mean": 6.991228070175438,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 3,
+      "control_c5_17": 7,
+      "control_inside": true,
+      "targets": {
+        "111": {
+          "value": 6,
+          "separates": false,
+          "percentile": 38.5
+        },
+        "207": {
+          "value": 3,
+          "separates": false,
+          "percentile": 1.9
+        }
+      }
+    },
+    "purifier_S": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 1,
+      "cohort_max": 4,
+      "cohort_mean": 2.8173076923076925,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 1,
+      "control_c5_17": 3,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 2,
+          "separates": false,
+          "percentile": 26.9
+        },
+        "207": {
+          "value": 1,
+          "separates": false,
+          "percentile": 1.9
+        }
+      }
+    },
+    "sa_saturated": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 123,
+      "cohort_max": 223,
+      "cohort_mean": 167.60576923076923,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 57,
+      "control_c5_17": 49,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 164,
+          "separates": false,
+          "percentile": 39.4
+        },
+        "207": {
+          "value": 119,
+          "separates": true,
+          "percentile": 0.0
+        }
+      }
+    },
+    "ssa_saturated": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 300,
+      "cohort_max": 695,
+      "cohort_mean": 448.3942307692308,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 102,
+      "control_c5_17": 91,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 419,
+          "separates": false,
+          "percentile": 36.5
+        },
+        "207": {
+          "value": 301,
+          "separates": false,
+          "percentile": 1.0
+        }
+      }
+    },
+    "mmi_saturated": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 26,
+      "cohort_max": 33,
+      "cohort_mean": 29.75,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 14,
+      "control_c5_17": 11,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 31,
+          "separates": false,
+          "percentile": 83.7
+        },
+        "207": {
+          "value": 28,
+          "separates": false,
+          "percentile": 26.9
+        }
+      }
+    },
+    "mmi_sat_frac": {
+      "n_agnostic": true,
+      "cohort_size": 114,
+      "cohort_min": 0.5,
+      "cohort_max": 0.9428571428571428,
+      "cohort_mean": 0.8263157894736842,
+      "degenerate": false,
+      "n6_constant": false,
+      "control_c5_10": 0.7,
+      "control_c5_17": 0.55,
+      "control_inside": true,
+      "targets": {
+        "111": {
+          "value": 0.8857142857142857,
+          "separates": false,
+          "percentile": 83.7
+        },
+        "207": {
+          "value": 0.8,
+          "separates": false,
+          "percentile": 26.9
+        }
+      }
+    },
+    "mmi_min_slack": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 0,
+      "cohort_max": 0,
+      "cohort_mean": 0.0,
+      "degenerate": true,
+      "n6_constant": true,
+      "control_c5_10": 0,
+      "control_c5_17": 0,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 0,
+          "separates": false,
+          "percentile": 100.0
+        },
+        "207": {
+          "value": 0,
+          "separates": false,
+          "percentile": 100.0
+        }
+      }
+    },
+    "zero_pair_MI": {
+      "n_agnostic": false,
+      "cohort_size": 104,
+      "cohort_min": 21,
+      "cohort_max": 21,
+      "cohort_mean": 21.0,
+      "degenerate": true,
+      "n6_constant": true,
+      "control_c5_10": 15,
+      "control_c5_17": 15,
+      "control_inside": null,
+      "targets": {
+        "111": {
+          "value": 21,
+          "separates": false,
+          "percentile": 100.0
+        },
+        "207": {
+          "value": 21,
+          "separates": false,
+          "percentile": 100.0
+        }
+      }
+    },
+    "independent_parties": {
+      "n_agnostic": true,
+      "cohort_size": 114,
+      "cohort_min": 6,
+      "cohort_max": 7,
+      "cohort_mean": 6.912280701754386,
+      "degenerate": false,
+      "n6_constant": true,
+      "control_c5_10": 6,
+      "control_c5_17": 6,
+      "control_inside": true,
+      "targets": {
+        "111": {
+          "value": 7,
+          "separates": false,
+          "percentile": 100.0
+        },
+        "207": {
+          "value": 7,
+          "separates": false,
+          "percentile": 100.0
+        }
+      }
+    }
+  },
+  "separators": {
+    "111": [],
+    "207": [
+      "n_4holes",
+      "holes_per_hyp",
+      "sa_saturated"
+    ]
+  },
+  "verdict": "NO non-degenerate cheap invariant in this battery separates s=111 from the non-chordal tree-realizable cohort (including the C5 10/17 controls). On every invariant tested, s=111 lies INSIDE the range spanned by confirmed tree-realizable rays \u2014 usually near the cohort mean. This is evidence that s=111 is an ORDINARY tree-realizable ray that is merely hard to crack, NOT a structural counterexample to the strong tree conjecture. It is NOT a proof of realizability; it redirects effort to the search filter (the angle-1 filter) rather than to a non-existence claim.",
+  "verdict_207": "s=207 lies MARGINALLY outside the cohort on n_4holes, holes_per_hyp, sa_saturated (small boundary excursions on count-type invariants: 42 vs max 40 holes, 0.737 vs 0.714 hole density, 119 vs min 123 SA-saturated). The cohort edge is itself a tree-realizable ray, so this is the high-hole-density / low-SA-saturation END of a continuum, NOT a clean gap \u2014 weak, single-cohort-boundary, and 207 has no studied cyclic seed. It is NOT a candidate obstruction in the strong sense; reported for completeness and as proof the test is not trivially returning 'inside' for everything.",
+  "caveats": [
+    "'No separator' means none in THIS battery of cheap invariants, not that none can exist; a finer invariant could still separate 111.",
+    "A different/equal invariant value is correlation, never proof; no non-realizability is claimed from any invariant.",
+    "s=111 and s=207 ARE holographic (each is realized, with a bulk cycle); only the tree-vs-cycle question is open.",
+    "Degenerate invariants (cohort min==max, flagged 'degenerate') carry no discriminating signal; their 'inside' verdict is vacuous.",
+    "Suspects {110,145,168} are not analyzed here (instruction)."
+  ],
+  "reproduce": ".venv/bin/python -m hec.obstruction_search"
+}
