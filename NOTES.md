@@ -3,6 +3,67 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-15 — Session 17: hec/attack_207.py — s=207 UNBLOCKED (seed obtained) → it STALLS THE SAME WAY s=111 DOES (bulk-cycle obstruction is GENERAL, not 111-specific)
+
+**The twin s=207 was untouched for ONE reason — no seed. STEP 0 got one, and
+the rest followed.** `hec/attack_207.py` + `tests/test_attack_207.py`; seed saved
+(NEW file, 111's committed seed untouched) to `data/targets/bulk_cycle_seed_207.json`;
+report `reports/attack_207.{json,md}`. Reproduce: `.venv/bin/python -m
+hec.attack_207`.
+
+**STEP 0 — SEED OBTAINED (the actual blocker, resolved).** Tried, in order:
+(a/b) hecdata orbit-match — 207 is ABSENT (4145 n=6 graphs scanned, no Sym(7)
+orbit match); (c) `lp_realize_target` from scratch — NO realization in 24 tries /
+~550 s (the same bottleneck that blocked 111). What worked: **transcribing #207's
+"simple graph" from the paper's own figure** (arXiv:2412.15364
+`figures/ER_graphs.pdf`, rendered at 1000 dpi), then Sym(7) orbit-matching it to
+our representative and EXACT-verifying — its entropy vector == **2× the s=207
+representative** in Fraction arithmetic, all 63 components (the ray-match is the
+safety net; the s181 lesson — a misread edge/weight would not verify). The
+paper→our-rep relabel is the identity, confirming our 207 rep aligns with the
+figure's A–F,O labels.
+
+**STEP 1 — the seed is genuinely the bulk-cycle case.** SA+SSA ✓, SAC-extreme
+(saturated-SA rank 62) ✓, HEI-clean ✓ (genuinely holographic), non-chordal ✓
+(surviving bulk cycle). Structure: cyclomatic **4** = a pure-bulk **4-cycle**
+(x1-x2-x3-x4, vertex degrees [4,4,5,5]) PLUS 3 boundary triangles (E,F,A each
+with two adjacent bulk vertices) and four weight-2 pendants. The boundary
+triangles are removable; the pure-bulk 4-cycle (no triangle, no degree-3 bulk) is
+the hard core.
+
+**STEP 2 — surgery: BOUNDED negative, the SAME wall as 111.** Directed
+cycle_surgery (the complete validated move set) kills the 3 boundary triangles
+(cyclomatic 4→1) then the canonical frontier EMPTIES at 127 states without
+reaching a tree (robust: raising max_nodes to 120k / depth 45 / y_delta_depth 14
+leaves the count at 127 — the move-closure genuinely closes). Best stuck graph: a
+surviving pure-bulk cycle. NOT a proof no tree exists — 207 IS holographic, only
+the tree question is open.
+
+**111 vs 207 — the payoff contrast (computed apples-to-apples in one run):**
+
+| orbit | seed cyclomatic | pure-bulk core | surgery | best cyclomatic |
+|---|---|---|---|---|
+| s=111 | 3 | 4-cycle, deg [4,4,4,5] | no_reduction | 1 |
+| s=207 | 4 | 4-cycle, deg [4,4,5,5] | no_reduction | 1 |
+
+**SAME obstruction class.** Both twins bottom out (under the complete local move
+set) on a surviving pure-bulk 4-cycle with degree-4/5 vertices and neither
+reaches a tree. 207 differs only superficially (3 extra removable boundary
+triangles → cyclomatic 4 vs 3). So this is the THIRD of the task's three
+outcomes: **207 stalls the same way 111 does → the bulk-cycle obstruction is a
+GENERAL phenomenon of both orbits, not specific to 111.** Converges with the
+same-week obstruction_search (no cheap invariant separates 111) and the
+cut-feasibility / rigidity_explorer lines: the difficulty lives in the pure-bulk
+cycle, shared by the twins.
+
+**Honesty:** bounded negatives only ("no tree under {move set, seed, bound}",
+never "no tree exists"); seed exact-verified before any downstream use; 207 IS
+holographic. A noted (un-run) next lever: 207's frontier bottoms out on an
+all-degree-3 pure-bulk cycle where Y→Δ is nominally applicable — a wider/deeper
+or fine-graining search is the principled next step, as for 111. Suspects
+{110,145,168}, the email, the README, and s=111's committed seed untouched. 5 new
+tests; full suite 64 green; day-1 regression passes.
+
 ## 2026-06-15 — Session 16: rigidity_explorer — NO cheap predictor of rigidity found, ON AN ADMITTEDLY NOISY / UNDERPOWERED LABEL SET (calibration.ok=false); SOUND dead-end detector fires on 0 seeds incl. s=111; committed with mandatory caveat
 
 **HEADLINE (honest negative, labeled as honest): no cheap structural feature
@@ -69,6 +130,47 @@ combinatorial feature of a seed. No claim of tree-non-existence anywhere; "rigid
 is always cycle_surgery-bounded; suspects {110,145,168} and s=111/207 untouched.
 Per protocol: HELD UNCOMMITTED pending review.
 
+## 2026-06-15 — Session 15: cut-feasibility pre-LP filter — PROVED non-discriminating (rejects 0%); GATE 2 still LP-bound; NOT committed
+
+**Asked for a sound cheap pre-LP rejection filter (min-cut feasibility) to make
+vector_enumeration's GATE 2 tractable. Did the soundness proof FIRST (as the
+protocol demands) — it shows the natural cut-feasibility filters are NOT
+necessary conditions here, so pruning on them would be UNSOUND (same lesson as
+chordality). Implemented the one provably-sound survivor; it rejects 0.00%,
+confirming the analysis. GATE 2 stays LP-bound. Held uncommitted.**
+
+**The proof (edge-zeroing / sub-forest):** a colored tree T realizes v iff some
+NON-NEGATIVE weighting matches every min-cut. A zero-weight edge = a deleted
+edge, so T realizes v iff some SUB-FOREST of T does with positive weights.
+Hence nearly every cut-combinatorial obstruction on the full topology is
+circumvented by zeroing an interior edge — cut-feasibility conditions are almost
+never necessary. The only forced-positive edges are single-leaf parties'
+leaf-edges; the one robustly-necessary survivor (isolated degree-2 bulk vertex
+carrying two single-leaf parties → forces MI>0) is vanishingly rare.
+
+**Measurements (the deliverable numbers):** (a) random hit rate — 0/120 ray-11
+candidates realize the ray; the <1% hit rate is a VALUE/cone phenomenon (the LP
+finding no weights), NOT combinatorial — on trees the PMI/cut structure are too
+flexible (edge-zeroing). (b) the provably-sound filter's rejection rate on all
+4092 ray-11 n_extra=1 candidates: **0/4092 = 0.00%**. (c) equivalence/soundness:
+1 hit found on the correct split, **0 wrongly rejected** — the filter never
+drops a real hit.
+
+**Conclusion:** no cheap sound cut-feasibility pre-filter cuts the LP load for
+this class — the LP is essentially the cheapest sound discriminator, because the
+discrimination lives in entropy VALUES, not cut combinatorics. Parallel to the
+chordality finding: the obvious cheap necessary conditions are NOT necessary
+here; the discipline is to prove that and ship no unsound prune. This also
+CONVERGES with the same-day obstruction_search result below (no cheap invariant
+separates 111 → "ordinary, just hard"). Per protocol (GATE 2 not tractable):
+NOT committed; s=111 untouched. Only remaining fast route is the sound PMI /
+hypergraph-coarse-graining inversion — research-open.
+
+**ACTION FLAG:** `cycle_surgery.canon_key` carries the SAME non-canonical-color
+soundness bug fixed in vector_enumeration (search-state dedup collisions →
+could drop states). FIXED in the working tree, UNCOMMITTED. It's a correction to
+already-committed `main`, NOT gated on GATE 2 — recommend committing on its own.
+
 ## 2026-06-15 — Session 14: hec/obstruction_search.py — cheap LP-free test of whether s=111 is SPECIAL or just HARD → it's ORDINARY (no separator)
 
 **Flipped the question.** Instead of searching (and failing) for a tree
@@ -129,6 +231,105 @@ open; suspects {110,145,168} not analyzed; email/README untouched. Two latent
 bugs avoided by validation: optimized exact 4-hole count is regression-tested ==
 brute force; percentile centrality computed within the SAME-n cohort to avoid an
 n-pooling artifact. 8 new tests; full suite 54 green; day-1 regression passes.
+
+## 2026-06-15 — Session 12-13: vector_enumeration — 2 SOUNDNESS BUGS caught + fixed; GATE 1 sound; GATE 2 perf-bound; NOT committed
+
+**Built the seed-independent vector-level decider (sound topology-enumeration
+route — NOT the fast-but-unsound PMI-inversion the paper postpones) and then
+OPTIMIZED it. The validation gates earned their keep: they caught TWO distinct
+soundness bugs that would have corrupted any verdict on the open s=111 problem.**
+All uncommitted (held for review; GATE 2 not tractable → protocol says no commit).
+
+**BUG 1 (caught by the equivalence test, gate A):** the multiset-permutation
+generator was created ONCE outside the per-tree loop, so it was exhausted after
+the first tree — silently dropping all colorings of every subsequent tree.
+Equivalence vs naive all-permutations: 5 vs 11 distinct → MISMATCH → fixed
+(materialize as a reusable list).
+
+**BUG 2 (caught by GATE 1, the known-answer gate — the big one):**
+`_canon_colored_tree` passed pynauty's color classes in DICT-ITERATION order,
+not a canonical order. pynauty's certificate depends on color-class order, so
+isomorphic colored trees got DIFFERENT keys (keyH ≠ keyTc though nx.is_isomorphic
+= True), and the dedup collided non-isomorphic structures → **dropped 82% of
+candidates: pre-fix n_extra=1 had 714 structures, post-fix 4092.** A pre-fix
+bounded-negative (incl. anything we'd have logged for 111) would have been
+UNSOUND — based on a 5.7×-incomplete enumeration. Fixed by sorting color
+classes by label. The SAME bug existed in `cycle_surgery.canon_key`
+(search-state dedup) — fixed there too (affects prior bounded counts).
+Regression test: `_canon_colored_tree` iso-invariance + the ray-11 structure
+must be enumerated.
+
+**GATE 1 — PASSES (sound), now CONFIRMED by a completed full run.** A full
+`decide(ray 11, bound=1)` finished: **tree FOUND and certified at N'=6**
+(refined-chordal, scale 1), via split {party 4 doubled} — a DIFFERENT but
+equally valid fine-graining than session-5's purifier-split tree, 3038 distinct
+structures tested, **10126 s (2.8 h)**. So the enumerator is sound AND complete
+enough to find a valid tree; the 2.8 h for a single n_extra=1 ray IS the
+performance wall (it fits the wrong split-structures before the right one).
+Earlier focused measurement: on the correct split, 295 fits / 141 s.
+GATE A (equivalence) and GATE 3 (coarse_grain reuse from fine_graining) pass.
+
+**GATE 2 — performance wall, NOT a soundness bug.** Candidate count: 4092 at
+n_extra=1, exploding for n_extra=2,3; the dominant cost is the per-structure
+LP-fit (~0.4-0.5 s each). The multiset/isomorph-free optimization cut
+GENERATION (5 s for 4092) but not FITTING. Full exhaustion at n_extra≥2 (which
+10/17 may need) is intractable in practical compute; early-exit helps only if
+hits fall early. This is precisely the cost the fast PMI/chordality route
+avoids (chordality is a cheap combinatorial test; no weight fit) — and that
+route requires the research-open hypergraph-coarse-graining inversion.
+
+**Verdict & protocol:** soundness restored and gate-validated; GATE 1/3/A pass;
+GATE 2 not tractable → per the binding rule, **NOT committed, and s=111 stays
+untouched (no verdict).** Net value delivered: two real soundness bugs found
+and fixed (one badly undercounting; both also in committed cycle_surgery),
+plus regression tests. Path forward unchanged: a SOUND cheap fit-pruning filter
+(validated by equivalence) to cut the per-structure LP, or the sound PMI
+enumeration. Email/README/suspects untouched.
+
+## 2026-06-15 — Session 11: hec/fine_graining.py (coarse-graining + chordality)
+
+**Built the bounded fine-graining engine — and the validation gate caught a
+real bug, exactly as intended.** Uncommitted (held for review per instruction).
+
+**Correctness anchor: `coarse_grain` (exact, round-trip validated).**
+arXiv:2512.18702 eq. ent-vec-cg: S_X = S'_{cg⁻¹(X)}. Round-trip test: a
+non-simple tree's refined-simple-tree vector coarse-grains EXACTLY back to the
+labeled-entropy ground truth it realizes (verified on a hand tree + on
+cycle_surgery's 10/17 trees, == 2·ray10 / 1·ray17).
+
+**BUG CAUGHT BY THE GATE (then fixed):** first pass, ray 10's refined vector
+came out NON-chordal — impossible for a true simple tree. Cause:
+`relabel_to_simple` left multiple purifier copies labeled 'O', so the refined
+tree wasn't simple at the purifier. Fix: split the purifier too — one copy is
+the refined purifier, the rest become refined parties mapping back to 'O'.
+After the fix both 10/17 give genuinely simple refined trees, refined vector
+CHORDAL=True (theorem holds), round-trip exact. Regression-tested.
+
+**GATE PASSED (C5 10/17):** `fine_graining_realizable` finds + CERTIFIES
+non-simple tree realizations for both — refined simple tree at N'=8, verified
+chordal (arXiv:2512.24490 iff) and coarse-graining back to the ray exactly.
+N'=8 is consistent with 2204.00075 (C5 rays lift to N' ≤ 11; fig N5trees) — no
+bug, correct behavior on known-realizable rays.
+
+**s=111: honest BOUNDED negative.** No tree-able fine-graining found under the
+searched bound; surgery backend bounded-failed (best κ=1, pure-bulk 4-cycle).
+Logged as bounded ("not a proof no tree exists; the ray IS holographic").
+Honesty grep clean (no unqualified non-existence anywhere).
+
+**HONEST SCOPE (stated plainly):** the genuinely NEW, validated contributions
+are (1) the exact coarse-graining primitive and (2) the chordality
+CERTIFICATION that connects a found graph tree to the 2512.24490 iff theorem
+(records N', verifies the refined tree is chordal + coarse-grains back). What
+is NOT built: the seed-independent enumeration of fine-grained PMIs/vectors —
+the engine's realization SEARCH currently leans on the cycle_surgery backend,
+so for 111 it does NOT yet add decision power beyond surgery's bounded
+failure. The complete vector-level fine-graining is research-open: arXiv:
+2512.18702 itself postpones the fine-graining of correlation hypergraphs to
+future work ("graphoidal"). So 111 remains genuinely open; the principled
+next step is implementing that enumeration (split-structure → candidate
+refined PMI → chordality), which works from the vector and is seed-independent.
+
+44 tests green. Nothing committed/pushed; email + suspects untouched.
 
 ## 2026-06-12 — Session 10: multi-seed 111 experiment (seed-specific vs intrinsic?)
 

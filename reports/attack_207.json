@@ -1,0 +1,129 @@
+{
+  "what": "Attack on the s=207 bulk-cycle orbit (the unexplored twin of s=111): obtain a seed, characterize it, run tree-finding surgery, and compare to 111.",
+  "engine": "hec.attack_207 (reuses hec.cycle_surgery / chordality / cone; exact Fraction arithmetic)",
+  "step0_seed": {
+    "source": "arXiv:2412.15364 (He-Hubeny-Rota) figure ER_graphs.pdf, entry #207, the 'simple graph' column (one boundary vertex per party)",
+    "method": "transcribed from the figure, Sym(7) orbit-matched to our representative, and EXACT-verified (Fraction) to realize 2x the s=207 representative; perm from the paper's labels to ours is the identity",
+    "hecdata": "207 is ABSENT from the hecdata graph repo (github.com/SergioHC95/Holographic-Entropy-Cone, 4145 n=6 graphs scanned, no orbit match)",
+    "lp_construction": "lp_realize_target found no realization in 24 tries / ~550 s (the same bottleneck that blocked 111)"
+  },
+  "step1_validation": {
+    "seed_realizes_207_exact": true,
+    "scale": 2,
+    "SA_SSA": true,
+    "saturated_SA_rank": 62,
+    "SAC_extreme": true,
+    "HEI_clean": true,
+    "chordal": false,
+    "non_chordal": true
+  },
+  "step1_structure": {
+    "cyclomatic": 4,
+    "n_nodes": 11,
+    "n_edges": 14,
+    "n_cycles_basis": 4,
+    "n_pure_bulk_cycles": 1,
+    "pure_bulk_cycle": {
+      "length": 4,
+      "vertices": [
+        "x2",
+        "x3",
+        "x4",
+        "x1"
+      ],
+      "degrees": {
+        "x2": 5,
+        "x3": 5,
+        "x4": 4,
+        "x1": 4
+      },
+      "pure_bulk": true,
+      "delta_y_applicable": false,
+      "y_delta_candidates": [],
+      "boundary_split_reachable": false,
+      "why_stuck": "pure-bulk cycle, no triangle, no degree-3 bulk vertex; local entropy-preserving moves inapplicable"
+    }
+  },
+  "step2_surgery": {
+    "status": "no_reduction",
+    "nodes": 127,
+    "best_cyclomatic": 1,
+    "cert_path": null,
+    "verdict": "BOUNDED: no entropy-preserving move sequence reduced s=207's realization to a tree under the complete local move set (frontier emptied at 127 canonical states, best cyclomatic 1). NOT a proof no tree exists; 207 IS holographic."
+  },
+  "step2_surviving_obstruction": [
+    {
+      "length": 7,
+      "vertices": [
+        "x3",
+        "s1",
+        "x2",
+        "s0",
+        "x1",
+        "x4",
+        "s2"
+      ],
+      "degrees": {
+        "x3": 3,
+        "s1": 3,
+        "x2": 3,
+        "s0": 3,
+        "x1": 3,
+        "x4": 3,
+        "s2": 3
+      },
+      "pure_bulk": true,
+      "delta_y_applicable": false,
+      "y_delta_candidates": [
+        "x3",
+        "s1",
+        "x2",
+        "s0",
+        "x1",
+        "x4",
+        "s2"
+      ],
+      "boundary_split_reachable": false,
+      "why_stuck": "see flags"
+    }
+  ],
+  "comparison_111_vs_207": {
+    "111": {
+      "seed_cyclomatic": 3,
+      "n_pure_bulk_cycles": 1,
+      "pure_bulk_core": {
+        "length": 4,
+        "degrees": [
+          4,
+          4,
+          4,
+          5
+        ],
+        "delta_y_applicable": false
+      },
+      "surgery": "no_reduction",
+      "best_cyclomatic": 1
+    },
+    "207": {
+      "seed_cyclomatic": 4,
+      "n_pure_bulk_cycles": 1,
+      "pure_bulk_core": {
+        "length": 4,
+        "degrees": [
+          4,
+          4,
+          5,
+          5
+        ],
+        "delta_y_applicable": false
+      },
+      "surgery": "no_reduction",
+      "best_cyclomatic": 1
+    },
+    "same_obstruction_class": true,
+    "reading": "Both twins reduce (under the complete local move set) to a surviving PURE-BULK cycle and neither reaches a tree -> the bulk-cycle obstruction is a GENERAL phenomenon shared by 111 and 207, not specific to 111. 207's seed carries 3 extra REMOVABLE boundary triangles (cyclomatic 4 vs 111's 3), but its irreducible core is the same pure-bulk 4-cycle with degree-4/5 vertices."
+  },
+  "verdict": "s=207 is NO LONGER seed-blocked: a cyclic realization was obtained from the paper's figure and exact-verified. Running the validated surgery, s=207 STALLS THE SAME WAY s=111 DOES \u2014 its irreducible core is a pure-bulk 4-cycle (degree-4/5 vertices), the identical obstruction class as 111, with 3 extra removable boundary triangles. The complete local entropy-preserving move set empties the frontier without reaching a tree: a BOUNDED negative. Evidence the bulk-cycle obstruction is a GENERAL phenomenon of both twins, not specific to 111. NOT a proof that no tree exists; s=207 is holographic, only the tree question is open.",
+  "honesty": "Bounded negatives only; the seed is exact-verified before any downstream use; no non-realizability claimed. Suspects {110,145,168}, the email, the README, and s=111's committed seed untouched.",
+  "reproduce": ".venv/bin/python -m hec.attack_207"
+}

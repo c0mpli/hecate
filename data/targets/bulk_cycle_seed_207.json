@@ -1,0 +1,91 @@
+{
+  "what": "cyclic graph realization (seed) for the bulk-cycle orbit s=207, transcribed from the paper's figure and EXACT-verified; the Delta-Y seed for hec.cycle_surgery / hec.attack_207",
+  "source": "arXiv:2412.15364 (He-Hubeny-Rota) figure ER_graphs.pdf, entry #207, the 'simple graph' column (one boundary vertex per party)",
+  "method": "transcribed from the figure, Sym(7) orbit-matched to our representative, and EXACT-verified (Fraction) to realize 2x the s=207 representative; perm from the paper's labels to ours is the identity",
+  "hecdata": "207 is ABSENT from the hecdata graph repo (github.com/SergioHC95/Holographic-Entropy-Cone, 4145 n=6 graphs scanned, no orbit match)",
+  "lp_construction": "lp_realize_target found no realization in 24 tries / ~550 s (the same bottleneck that blocked 111)",
+  "scale": 2,
+  "cyclomatic": 4,
+  "realizes": "entropy_vector_labeled(seed) == 2 x s=207 representative (exact, all 63 components)",
+  "edges": [
+    [
+      "O",
+      "x3",
+      2
+    ],
+    [
+      "4",
+      "x3",
+      1
+    ],
+    [
+      "4",
+      "x2",
+      1
+    ],
+    [
+      "5",
+      "x3",
+      1
+    ],
+    [
+      "5",
+      "x4",
+      1
+    ],
+    [
+      "2",
+      "x2",
+      2
+    ],
+    [
+      "0",
+      "x2",
+      1
+    ],
+    [
+      "0",
+      "x1",
+      1
+    ],
+    [
+      "3",
+      "x4",
+      2
+    ],
+    [
+      "1",
+      "x1",
+      2
+    ],
+    [
+      "x3",
+      "x2",
+      1
+    ],
+    [
+      "x2",
+      "x1",
+      1
+    ],
+    [
+      "x1",
+      "x4",
+      2
+    ],
+    [
+      "x4",
+      "x3",
+      1
+    ]
+  ],
+  "party": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4,
+    "5": 5,
+    "O": "O"
+  }
+}
