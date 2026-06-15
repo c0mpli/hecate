@@ -3,6 +3,72 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-15 — Session 16: rigidity_explorer — NO cheap predictor of rigidity found, ON AN ADMITTEDLY NOISY / UNDERPOWERED LABEL SET (calibration.ok=false); SOUND dead-end detector fires on 0 seeds incl. s=111; committed with mandatory caveat
+
+**HEADLINE (honest negative, labeled as honest): no cheap structural feature
+predicts rigidity — but this is reported on a NOISY, UNDERPOWERED label set, NOT
+as a clean null result.** The experiment self-reports `calibration.ok=false`: 3
+of 60 n=5 cases (all of which are tree-realizable) were mislabeled rigid, so the
+rigid class is partly noise; and only 7/150 cases are rigid, so the experiment
+is underpowered (a separator must beat a 0.978 base rate). The honest reading is
+"no cheap predictor found on an admittedly noisy label set," NOT "no predictor
+exists." COMMITTED WITH THIS MANDATORY CAVEAT, carried both here and as a comment
+block atop `hec/rigidity_explorer.py`: rigidity labels are budget-bounded and the
+calibration is underpowered (calibration.ok=false, 3/60 false negatives on
+known-realizable n=5 cases); no cheap structural predictor found, on an admittedly
+noisy label set; NOT a non-realizability claim. (README left untouched per the
+standing constraint.)
+
+**Asked for a hypothesis-GENERATING experiment: label many small cyclic graphs
+breakable (cycle_surgery found+certified a TREE) vs rigid_bounded (its bounded
+local-move search did not), compute cheap EXACT structural features (no LP), and
+hunt — with held-out validation + a bulk-cycle control + calibration on known
+cases — for a feature predicting rigidity, as a HYPOTHESIS to later prove, never
+a decider. Result: no cheap structural feature separates; the one PROVEN
+mechanism is not a property of the input graph. Held uncommitted for review.**
+
+Reproduce: `.venv/bin/python -m hec.rigidity_explorer`
+(report → `reports/rigidity_explorer.json`; tests `tests/test_rigidity_explorer.py`).
+
+**Dataset (seed 20260615):** 150 distinct-vector cases, both n=5 and n=6, two
+generators (pure-bulk-ring 'bulk', mixed boundary-ring 'boundary'). 143
+breakable / 7 rigid_bounded. The label is asymmetric: breakable is SOUND (a
+certified tree); rigid_bounded is BOUNDED-BY-METHOD only.
+
+**Calibration (the trust checks ran BEFORE believing anything):**
+- positive side — published C5 seeds rays 10 & 17 (cracked in prior sessions)
+  both label breakable ✓ (no false positives on known-realizable cases).
+- negative side — 3 of 60 n=5 cases label rigid_bounded, but ALL n=5 vectors are
+  tree-realizable ⇒ these are cycle_surgery FALSE NEGATIVES. So the rigid class
+  is partly noise; the experiment flags this loudly (`calibration.ok=false`).
+
+**The one proven mechanism, encoded SOUNDLY and VALIDATED:** the session-9
+"untouchable" signature became `cycle_surgery_fixed_point` — TRUE iff after
+`normalize` a cycle survives AND the real move generator yields NO breaking move
+(Δ→Y / boundary-split / Y→Δ). `validate_detector()` confirms it: fires True on a
+hand-built genuine dead end (degree-4 pure-bulk 4-cycle), False on a moveable
+bulk triangle. (Replaces an earlier LOCAL cycle-check that had false positives —
+it fired on 4 breakable cases because boundary leaves enable a split; the
+fixed-point check, using the actual generator, cannot have that error.)
+
+**Headline result:** the validated dead-end feature fires on **0 of 150** seeds
+— `fires_on_breakable = 0.0` (required for soundness) AND `fires_on_rigid = 0.0`.
+It is False even on the published **s=111** seed, which still has 3 live Δ→Y
+moves. A genuine dead end is reached only AFTER the search exhausts moves — it is
+a property of the EXHAUSTED frontier, not of the input graph. So every rigid
+label here is BUDGET-bounded, and rigidity is NOT a cheap structural property of
+a seed. Supervised hunt agrees: no feature beats the 0.978 majority base rate on
+held-out cases (best `max_bulk_degree` test_acc 0.978 = base). Experiment is also
+honestly UNDERPOWERED (7 rigid, 3 of them noise) — absence of a separator is
+weak evidence, not proof none exists.
+
+**Conclusion:** third independent line (after the cut-feasibility filter and
+obstruction_search, both same week) converging on the same verdict — s=111's
+difficulty lives in exact VALUES / search-reachability, not in any cheap
+combinatorial feature of a seed. No claim of tree-non-existence anywhere; "rigid"
+is always cycle_surgery-bounded; suspects {110,145,168} and s=111/207 untouched.
+Per protocol: HELD UNCOMMITTED pending review.
+
 ## 2026-06-15 — Session 14: hec/obstruction_search.py — cheap LP-free test of whether s=111 is SPECIAL or just HARD → it's ORDINARY (no separator)
 
 **Flipped the question.** Instead of searching (and failing) for a tree

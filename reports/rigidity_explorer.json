@@ -1,0 +1,89 @@
+{
+  "what": "Hypothesis-generating rigidity experiment: do cheap exact structural features predict whether cycle_surgery breaks a cyclic structure to a TREE? Label is BOUNDED-by-cycle_surgery (rigid means 'local moves failed', NOT 'no tree exists').",
+  "engine": "hec.rigidity_explorer (exact labels+features; floats only for stump ranking)",
+  "dataset": {
+    "total": 150,
+    "breakable": 143,
+    "rigid_bounded": 7,
+    "by_n": {
+      "5": 60,
+      "6": 90
+    }
+  },
+  "calibration_n5_all_breakable": {
+    "n5_rigid_false_negatives": 3,
+    "ok": false
+  },
+  "calibration_known_breakable_c5": {
+    "c5_ray_10": "breakable",
+    "c5_ray_17": "breakable",
+    "ok": true
+  },
+  "detector_self_check": {
+    "dead_end_detected": true,
+    "moveable_rejected": true,
+    "ok": true
+  },
+  "heldout": {
+    "train": 105,
+    "test": 45,
+    "majority_base_rate": 0.978
+  },
+  "separators_by_test_accuracy": [
+    {
+      "feature": "max_bulk_degree",
+      "threshold": 7.5,
+      "train_acc": 0.933,
+      "test_acc": 0.978
+    },
+    {
+      "feature": "v_lg_clique_number",
+      "threshold": 20.5,
+      "train_acc": 0.924,
+      "test_acc": 0.978
+    },
+    {
+      "feature": "v_lg_cyclomatic",
+      "threshold": 2122.5,
+      "train_acc": 0.952,
+      "test_acc": 0.978
+    },
+    {
+      "feature": "v_lg_deg_max",
+      "threshold": 65.5,
+      "train_acc": 0.943,
+      "test_acc": 0.978
+    },
+    {
+      "feature": "v_lg_deg_min",
+      "threshold": 17.0,
+      "train_acc": 0.933,
+      "test_acc": 0.978
+    },
+    {
+      "feature": "v_mmi_saturated",
+      "threshold": 9.5,
+      "train_acc": 0.933,
+      "test_acc": 0.978
+    },
+    {
+      "feature": "v_n_hyperedges",
+      "threshold": 66.5,
+      "train_acc": 0.943,
+      "test_acc": 0.978
+    },
+    {
+      "feature": "v_purifier_S",
+      "threshold": 15.5,
+      "train_acc": 0.933,
+      "test_acc": 0.978
+    }
+  ],
+  "confound_signature": {
+    "feature": "cycle_surgery_fixed_point",
+    "fires_on_rigid_bounded": 0.0,
+    "fires_on_breakable": 0.0,
+    "note": "SOUND session-9 dead-end signature (real move generator). fires_on_breakable MUST be 0 (a dead end cannot be broken); a nonzero value would be a bug. fires_on_rigid_bounded is the fraction of rigid cases that are genuine dead ends vs merely budget-bounded \u2014 but a dead end is still NOT tree-non-existence."
+  },
+  "interpretation": "SOUND DEAD-END FEATURE FIRES ON NOTHING: the validated session-9 fixed-point detector (proven to fire on a genuine dead end) is True for 0 of the rigid seeds \u2014 and is False even on the published s=111 seed, which has live \u0394\u2192Y moves. A genuine dead end is reached only AFTER the search exhausts moves; it is a property of the search frontier, not of the input. So every 'rigid' label here is BUDGET-bounded, and rigidity is not a cheap structural property of the seed graph. UNDERPOWERED: only 7/150 cases are (bounded-)rigid, so the majority base rate is 0.978 \u2014 a separator must clear that high bar to register. cycle_surgery breaks almost everything, so reliable rigid examples are scarce by construction; absence of a separator here is weak evidence, not proof none exists. LABELING UNTRUSTWORTHY: 3 n=5 cases labeled rigid, but all n=5 vectors are tree-realizable \u2014 the rigid label is search-bounded and these are false negatives. The 'rigid' class is partly noise; treat any separation with caution. NO feature separates the (bounded) rigid label above the base rate on held-out cases (best 'max_bulk_degree' test_acc 0.978 vs base 0.978). Evidence the difficulty is in exact VALUES, not any cheap structural feature \u2014 consistent with the edge-zeroing / value-bound and obstruction_search findings. BOUNDED: 'rigid' = cycle_surgery local-move failure, never tree-non-existence; no claim about s=111/207 or suspects."
+}
