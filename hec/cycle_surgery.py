@@ -236,7 +236,12 @@ def canon_key(G, party):
         adj[a].append(mid)
         adj[b].append(mid)
         wgroup[wcls[w]].add(mid)
-    coloring = [s for s in groups.values()] + [wgroup[i] for i in range(len(weights))]
+    # color classes in CANONICAL order (party groups sorted by label, then
+    # weight groups in sorted-weight order) — pynauty's certificate depends on
+    # color-class order, so a dict-iteration order makes the key non-iso-
+    # invariant and the dedup unsound (collisions drop states). [fix: sort]
+    coloring = [groups[k] for k in sorted(groups, key=str)]
+    coloring += [wgroup[i] for i in range(len(weights))]
     coloring = [c for c in coloring if c]
     g = pynauty.Graph(nv, directed=False, adjacency_dict=adj, vertex_coloring=coloring)
     return (tuple(str(w) for w in weights), pynauty.certificate(g))
