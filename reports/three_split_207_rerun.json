@@ -1,0 +1,184 @@
+{
+  "what": "207-only EXACTLY-3-SPLIT re-run with per-fit-timeout fix (salvages churner-crippled target)",
+  "gates": {
+    "B_3split": {
+      "gate": "B_3split_sweep_strength_recovery",
+      "fit": "descents=10,cut_rounds=8,attempts=4",
+      "cases": {
+        "10": {
+          "ok": true,
+          "n_splits": 3,
+          "n_bulk": 4
+        },
+        "17": {
+          "ok": true,
+          "n_splits": 3,
+          "n_bulk": 4
+        }
+      },
+      "ok": true
+    },
+    "C_round_trip": {
+      "gate": "C_lifting_round_trip",
+      "ok": true,
+      "n_prime": 7,
+      "refined_chordal": true,
+      "round_trip_exact": true
+    }
+  },
+  "total_wall_s": 21941.7,
+  "s207": {
+    "result": "PARTIAL_bounded_negative",
+    "cert_path": null,
+    "split_labels": null,
+    "info": {
+      "status": "no_tree_found",
+      "route": "exactly_3_split",
+      "k_splits": 3,
+      "m_max": 2,
+      "n_bulk_values": [
+        4,
+        5,
+        3
+      ],
+      "n_bulk_fully_covered": [],
+      "n_bulk_fully_covered_through": null,
+      "distinct_structures_tested": 5430,
+      "fits": 21672,
+      "fit_timeouts": 33,
+      "elapsed_s": 21936.8,
+      "per_pair": {
+        "0+1+2": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 419.9,
+          "cap_truncated": true
+        },
+        "0+1+3": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 430.3,
+          "cap_truncated": true
+        },
+        "0+1+4": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 477.9,
+          "cap_truncated": true
+        },
+        "0+1+5": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 395.8,
+          "cap_truncated": true
+        },
+        "0+1+O": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 372.9,
+          "cap_truncated": true
+        },
+        "0+2+3": {
+          "distinct": 300,
+          "fits": 1199,
+          "time_s": 409.3,
+          "cap_truncated": true
+        },
+        "0+2+4": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 457.0,
+          "cap_truncated": true
+        },
+        "0+2+5": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 530.1,
+          "cap_truncated": true
+        },
+        "0+2+O": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 428.1,
+          "cap_truncated": true
+        },
+        "0+3+4": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 520.7,
+          "cap_truncated": true
+        },
+        "0+3+5": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 416.8,
+          "cap_truncated": true
+        },
+        "0+3+O": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 445.0,
+          "cap_truncated": true
+        },
+        "0+4+5": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 425.7,
+          "cap_truncated": true
+        },
+        "0+4+O": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 385.7,
+          "cap_truncated": true
+        },
+        "0+5+O": {
+          "distinct": 300,
+          "fits": 1200,
+          "time_s": 415.7,
+          "cap_truncated": true
+        },
+        "1+2+3": {
+          "distinct": 300,
+          "fits": 1190,
+          "time_s": 515.8,
+          "cap_truncated": true
+        },
+        "1+2+4": {
+          "distinct": 300,
+          "fits": 1187,
+          "time_s": 2983.0,
+          "cap_truncated": true
+        },
+        "1+2+5": {
+          "distinct": 300,
+          "fits": 1177,
+          "time_s": 10658.8,
+          "cap_truncated": true
+        },
+        "1+2+O": {
+          "distinct": 30,
+          "fits": 119,
+          "time_s": 1248.2,
+          "cap_truncated": false
+        }
+      },
+      "per_bulk": {
+        "4": {
+          "distinct": 5430,
+          "pairs_done": 18,
+          "fully_covered": false
+        }
+      },
+      "caps_hit": {
+        "time_budget_truncated": true,
+        "candidate_cap_truncated": true,
+        "fit_timeout_s": 5,
+        "fit_timeouts": 33,
+        "max_trees": 300,
+        "time_budget_s": 21600
+      },
+      "qualifier": "BOUNDED/PARTIAL: no realization of s=207 found via EXACTLY 3 split(s), each into <= 2 sub-parties, over 5430 distinct (pynauty-canonical) leaf-colored tree structures at n_bulk in [4, 5, 3]. Split-groups were FULLY covered at n_bulk=[] \u2014 but with a per-cell candidate CAP (max_trees=300); cells that hit it sampled only the first 300 distinct trees in enumeration order (PARTIAL, not exhaustive); the run was also TRUNCATED by the time budget before all (split,bulk) cells were reached (PARTIAL). This negative is bounded by (i) the exactly-3-split/m=2/n_bulk enumeration AND the leaf-boundary restriction of colored_trees (boundary vertices must be tree leaves), (ii) the caps just noted, and (iii) the HEURISTIC weight fit (a fit miss is not a proof the structure cannot realize v). NOT a proof that no tree realization exists; NOT a statement about realizability (the ray is holographic)."
+    }
+  }
+}

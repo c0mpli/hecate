@@ -1,0 +1,240 @@
+{
+  "what": "EXACTLY-2-SPLIT bounded decider for s=111's tree question",
+  "engine": "hec.two_split_enumerator (enumerate 2-split leaf-colored trees; exact weight fit; chordality+coarse-grain certificate)",
+  "gates": {
+    "A": {
+      "ok": true,
+      "certify_lift": true,
+      "refit_recovers": true,
+      "splits": {
+        "O": 3
+      },
+      "n_splits": 1,
+      "leaf_boundary": false,
+      "n_prime": 7,
+      "enum_completeness": {
+        "out_of_scope": "known tree has a degree>1 boundary vertex; colored_trees enumerates leaf-boundary trees only \u2014 this tree is outside the enumeration scope (a real bound on the search), so completeness is N/A for it"
+      },
+      "gate": "A_one_split_ray11"
+    },
+    "B": {
+      "gate": "B_c5_10_17_component_validation",
+      "cases": {
+        "10": {
+          "ok": true,
+          "certify_lift": true,
+          "refit_recovers": true,
+          "splits": {
+            "1": 2,
+            "3": 2,
+            "O": 2
+          },
+          "n_splits": 3,
+          "leaf_boundary": true,
+          "n_prime": 8,
+          "enum_completeness": null
+        },
+        "17": {
+          "ok": true,
+          "certify_lift": true,
+          "refit_recovers": true,
+          "splits": {
+            "0": 2,
+            "2": 2,
+            "3": 2
+          },
+          "n_splits": 3,
+          "leaf_boundary": true,
+          "n_prime": 8,
+          "enum_completeness": null
+        }
+      },
+      "ok": true,
+      "note": "rays 10/17 known trees are 3-split; a 2-split negative for them is EXPECTED (not a bug). Validated via lift-certify + fit-recovery on the known trees (blind 3-split enumeration is the same 9-leaf wall as s=111)."
+    },
+    "C": {
+      "gate": "C_lifting_round_trip",
+      "ok": true,
+      "n_prime": 7,
+      "refined_chordal": true,
+      "round_trip_exact": true
+    },
+    "all_pass": true
+  },
+  "s111": {
+    "result": "bounded_negative",
+    "cert_path": null,
+    "info": {
+      "status": "no_tree_found",
+      "route": "exactly_2_split",
+      "k_splits": 2,
+      "m_max": 2,
+      "n_bulk_range": [
+        1,
+        3
+      ],
+      "n_bulk_fully_covered_through": 2,
+      "distinct_structures_tested": 4186,
+      "fits": 8372,
+      "per_pair": {
+        "0+1": {
+          "distinct": 1306,
+          "fits": 2612,
+          "time_s": 740.6,
+          "cap_truncated": false
+        },
+        "0+2": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 85.0,
+          "cap_truncated": false
+        },
+        "0+3": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.4,
+          "cap_truncated": false
+        },
+        "0+4": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.7,
+          "cap_truncated": false
+        },
+        "0+5": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.4,
+          "cap_truncated": false
+        },
+        "0+O": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 81.0,
+          "cap_truncated": false
+        },
+        "1+2": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.4,
+          "cap_truncated": false
+        },
+        "1+3": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 83.1,
+          "cap_truncated": false
+        },
+        "1+4": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.8,
+          "cap_truncated": false
+        },
+        "1+5": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.6,
+          "cap_truncated": false
+        },
+        "1+O": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 80.7,
+          "cap_truncated": false
+        },
+        "2+3": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.3,
+          "cap_truncated": false
+        },
+        "2+4": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.5,
+          "cap_truncated": false
+        },
+        "2+5": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.1,
+          "cap_truncated": false
+        },
+        "2+O": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 92.6,
+          "cap_truncated": false
+        },
+        "3+4": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.6,
+          "cap_truncated": false
+        },
+        "3+5": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.8,
+          "cap_truncated": false
+        },
+        "3+O": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.1,
+          "cap_truncated": false
+        },
+        "4+5": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 83.3,
+          "cap_truncated": false
+        },
+        "4+O": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 81.9,
+          "cap_truncated": false
+        },
+        "5+O": {
+          "distinct": 144,
+          "fits": 288,
+          "time_s": 82.0,
+          "cap_truncated": false
+        }
+      },
+      "per_bulk": {
+        "1": {
+          "distinct": 21,
+          "pairs_done": 21,
+          "fully_covered": true
+        },
+        "2": {
+          "distinct": 3003,
+          "pairs_done": 21,
+          "fully_covered": true
+        },
+        "3": {
+          "distinct": 1162,
+          "pairs_done": 0,
+          "fully_covered": false
+        }
+      },
+      "caps_hit": {
+        "time_budget_truncated": true,
+        "candidate_cap_truncated": false,
+        "max_trees": 6000,
+        "time_budget_s": 2400
+      },
+      "qualifier": "BOUNDED: no realization of s=111 found via EXACTLY 2 split(s), each into <= 2 sub-parties, over 4186 distinct (pynauty-canonical) leaf-colored tree structures. ALL split pairs were covered up to n_bulk=2 (breadth-first); n_bulk=3 was only PARTIALLY covered \u2014 search TRUNCATED by the time budget. This negative is bounded by (i) the exactly-2-split/m/bulk enumeration AND the leaf-boundary restriction of colored_trees (boundary vertices must be tree leaves \u2014 multi-split trees with a degree>1 boundary vertex are out of scope), (ii) the caps just noted, and (iii) the HEURISTIC weight fit (a fit miss is not a proof the structure cannot realize v). NOT a proof that no tree realization exists; NOT a statement about realizability (the ray is holographic)."
+    },
+    "interpretation": "BOUNDED NEGATIVE: no EXACTLY-2-SPLIT (each into 2) tree realizes s=111 across 4186 distinct (pynauty-canonical) leaf-colored tree structures. ALL 21 split-pairs were FULLY covered through n_bulk=2 (3024 structures); deeper n_bulk only partially. The negative is bounded by (i) the exactly-2-split / m=2 enumeration AND colored_trees' leaf-boundary restriction, (ii) n_bulk coverage + the time budget, (iii) the heuristic weight fit \u2014 at settings (descents=10,cut_rounds=8,attempts=2) that DEMONSTRABLY recover the known rays-10/17 3-split trees, so this is a fit that finds realizable structures, not a toothless one. NOT a proof no tree exists; s=111 is holographic; decides only the 2-split question. WHERE 2 SPLITS EXPLODE: the leaf-colored tree count grows steeply with bulk size (1 star at n_bulk=1; 143/pair at n_bulk=2; >1000/pair at n_bulk=3 \u2014 one pair's n_bulk=3 alone did not finish in ~11 min), so full n_bulk>=3 across 21 pairs is hours-to-days. With the per-fit cost tamed (the cut_rounds cap cut a pathological 30s fit to 0.25s), the wall is now the CANDIDATE COUNT (tree growth in n_bulk), not the per-candidate fit.",
+    "fit_power_check": {
+      "rays_10_17_known_3split_recovered_at_sweep_strength": true,
+      "sweep_fit": "descents=10,cut_rounds=8,attempts=2",
+      "note": "the sweep fit recovers known realizable trees -> the s=111 negative is credible"
+    }
+  },
+  "wall_seconds": 2406.3
+}

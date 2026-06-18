@@ -3,6 +3,147 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-16 — Session 19: EXACTLY-3-SPLIT campaign (s=111 AND s=207) — 12h box → both PARTIAL bounded negatives (no tree); 207 re-run with per-fit-timeout fix → 18/35 triples (salvaged from 1.3); gates pass
+
+**FINAL (after the 207 re-run):** s=111 14/35 triples (4248 structures), s=207 **18/35**
+triples (5430 structures) — both at the resolving n_bulk=4, capped 300/cell, NO
+3-split tree. The per-fit-timeout fix lifted s=207 from 1.3 → 18 triples; **33
+fit-timeouts** fired in the re-run, confirming there ARE genuine >5s churners (~0.6%
+of structures) that the fix bounds (the original 12h run's 40× slowdown was those
+churners amplified by overnight system load). 207-rerun report
+`reports/three_split_207_rerun.json`.
+
+**Extended two_split_enumerator to EXACTLY-3-SPLIT (decide_k_split is k-general,
+no reimplementation) and ran a 12h time-boxed campaign against the bulk-cycle
+obstruction CLASS — s=111 AND s=207 (they share the pure-bulk 4-cycle per the
+attack_207 finding). 3 splits is the rung where breakable cases resolve: rays
+10/17 (tree-realizable) need exactly 3 splits, at n_bulk=4. RESULT: no tree for
+either → both PARTIAL/capped bounded negatives; stop-on-success armed, not
+triggered.**
+
+**RESULTS (12.1h wall; gates B/C passed first, else abort).**
+- s=111: 6.1h, **4248 distinct** 3-split structures across **14/35 split-triples**
+  at the resolving n_bulk=4 (capped 300/cell), no tree. A moderate PARTIAL bound.
+- s=207: 6.0h, only **398 structures across ~1.3/35 triples**, no tree — coverage
+  CRIPPLED by RARE EXTREME-cost fits. Root-caused: one n_bulk=4 structure churned
+  the LP for **460s** (others ~0.3s); the cut_rounds cap bounds cut_rounds but not
+  the descents loop on a pathological weighted graph. A handful of such churners
+  ate 207's 6h.
+- Both negatives come from a fit VALIDATED by GATE B (sweep-strength a=4) to
+  recover rays 10/17's known 3-split trees — not toothless. Neither reached full
+  coverage; the searched region is a SMALL fraction of the 3-split space. NOT a
+  proof no tree exists; only the exactly-3-split tree question is bounded.
+
+**FIX (held uncommitted): per-fit wall-clock timeout** (`fit_timeout`). A timeout
+== a fit miss == bounded-honest. VALIDATED: `fit_timeout=3` skips the 460s churner
+(counted as `fit_timeouts`), 207 then runs at 111's rate (~1.2s/struct) → a re-run
+would lift 207 from ~1.3 to ~14 triples; GATE B still passes (known trees fit
+<1s, never time out). The campaign default is now `fit_timeout=5`. A 207-only
+re-run with the fix was approved and DONE (6.1h): **18/35 triples, 5430
+structures, 33 fit-timeouts, no tree** — a clean PARTIAL bounded negative that
+exceeds s=111's own coverage. So the fix is validated end-to-end, and the genuine
+churners (33) are confirmed real, not purely transient.
+
+**Calibration that shaped the run:** 3-split = 10 boundary leaves →
+10!/(2!³)=453600 leaf-perms/topology (pynauty enumeration is itself a cost; even
+n_bulk=1 = 11.8s for one star). Full coverage is days → searched the RESOLVING
+region (n_bulk∈[4,5,3], 4 first) with a per-cell cap (300) so coverage spans the
+35 triples C(7,3); GATE B attempts calibrated 2→flaky, 4→10/10 recovery.
+
+Reproduce: `python -c "from hec.two_split_enumerator import run_3split_campaign;
+run_3split_campaign()"` (report `reports/three_split_campaign.json`; checkpoints
+`reports/three_split_{111,207}_checkpoint.json`). Held uncommitted; suspects
+{110,145,168}, README, email, committed 111/207 seeds untouched.
+
+Reproduce: `.venv/bin/python -c "from hec.two_split_enumerator import
+run_3split_campaign; run_3split_campaign()"`
+(final report `reports/three_split_campaign.json`; live checkpoints
+`reports/three_split_{111,207}_checkpoint.json`).
+
+**Why this is the last brute-force lever, and how it's scoped to stay
+interpretable.** 3-split structure counts explode (10 boundary leaves →
+10!/(2!³)=453600 leaf-perms/topology; even n_bulk=1 took 11.8s for a single
+star). Full coverage is days. So the campaign SEARCHES THE RESOLVING REGION (the
+n_bulk where rays 10/17 resolve = 4; bracketed with 5, 3) with a per-cell CANDIDATE
+CAP (300 distinct/cell) so coverage spans all 35 split-triples (C(7,3)) rather than
+exhausting one. Outcome is therefore a labeled PARTIAL/capped result, never a
+false "full coverage". Per-fit cost tamed by the session-18 cut_rounds cap.
+
+**GATES (binding, all passed before the targets ran).**
+- B/3-split (the credibility gate): the SWEEP-STRENGTH fit (descents=10,
+  cut_rounds=8, attempts=4) must recover rays 10/17's KNOWN 3-split trees from
+  their bare topology — else a 111/207 negative is from a toothless fit and is
+  untrustworthy. CALIBRATED: attempts=2 was flaky (~10% miss → one ray's gate seed
+  failed); attempts=4 recovers BOTH at 10/10 across seeds. Gate passes at a=4.
+- C (lift round-trip): exact for the refined vectors.
+The campaign ABORTS (runs no target) if either gate fails — so no negative is
+ever reported from an unvalidated fit.
+
+**Config:** total 12h hard wall-clock; 111 first (≤6h), then 207 (remainder);
+n_bulk∈[4,5,3]; cap 300/cell; fit (d=10,cr=8,a=4); STOP-ON-SUCCESS per target
+(found tree → cert + stop). Checkpoints every 200 structures.
+
+**Outcomes (each cleanly interpretable, to be filled on completion):** TREE FOUND
+→ self-certifying cert (answers that orbit's open question); else PARTIAL/capped
+bounded negative with distinct count + coverage map (which triples/n_bulk done).
+NEVER "no tree exists". Held uncommitted; suspects {110,145,168}, README, email,
+committed 111/207 seeds untouched.
+
+## 2026-06-16 — Session 18: hec/two_split_enumerator.py — bounded EXACTLY-2-SPLIT decider for s=111 → BOUNDED NEGATIVE (4186 distinct structures; all 21 pairs through n_bulk=2); gates A/B/C pass; held uncommitted
+
+**Built the next rung of the bounded-split staircase: the EXACTLY-2-SPLIT
+decider for s=111's tree question (the 1-split regime is the literature figure;
+this attacks exactly 2 splits, brute-checked and sound). Result: no exactly-2-
+split tree found across 4186 distinct structures — a BOUNDED negative, with the
+"where 2 splits explode" structure made concrete. Held uncommitted for review.**
+
+Reproduce: `.venv/bin/python -m hec.two_split_enumerator`
+(report `reports/two_split_enumerator.json`; tests `tests/test_two_split_enumerator.py`).
+
+**Design / soundness.** Reuses the VALIDATED enumeration of `vector_enumeration`
+(leaf-colored tree topologies + exact weight fit + `certify_fine_graining`
+chordal+coarse-grain certificate). The spec's hoped-for "chordality check instead
+of per-candidate LP" is NOT sound as stated: the refined vector's split-
+separating entries are FREE (~192 for a 2-split of s=111), so there is no single
+refined vector to test for chordality — the prior session already rejected
+inverting the hypergraph coarse-graining as silent-bug-prone. So the per-
+candidate test IS the exact weight fit; chordality enters only as the certificate
+of a hit. Documented in the module.
+
+**Gates (all pass).**
+- A (1-split, ray 11): the known 1-split tree certifies through the lift pipeline
+  and the fitter recovers it from its bare topology. SCOPE finding: that saved
+  tree has a degree-2 boundary vertex, so it is OUTSIDE `colored_trees`' leaf-
+  boundary restriction — a real, recorded bound on the search.
+- B (C5 controls 10/17): MEASURED that their known cycle_surgery trees need 3
+  splits (ray10 {1,3,O}, ray17 {0,2,3}), so a 2-split negative for them is
+  EXPECTED, not a bug. A blind 3-split enumeration is the same 9-leaf wall as
+  s=111, so validated via component checks (lift-certify + fit-recovery) on the
+  known trees; both recovered.
+- C (lifting round-trip): a refined tree's vector coarse-grains EXACTLY back to
+  the labeled vector, refined tree chordal.
+
+**s=111 result (seed 20260615, 40-min budget).** BOUNDED NEGATIVE: no exactly-2-
+split tree across **4186 distinct** (pynauty-canonical) leaf-colored structures.
+ALL 21 split-pairs FULLY covered through **n_bulk=2** (3024 structures); pair
+(0,1) partially into n_bulk=3 (+1162) before the time cutoff. 8372 fits.
+**Credibility:** the sweep-strength fit (descents=10, cut_rounds=8, attempts=2)
+DEMONSTRABLY recovers the known rays-10/17 3-split trees — so the negative is from
+a fit that finds realizable structures, not a toothless one. The negative is
+bounded by (i) exactly-2-split/m=2 + the leaf-boundary restriction, (ii) n_bulk
+coverage (full ≤2, partial 3) + time budget, (iii) the heuristic fit. NOT a proof
+no tree exists; s=111 is holographic; decides only the 2-split question.
+
+**WHERE 2 SPLITS EXPLODE (the frontier insight).** With the per-fit cost tamed —
+a `cut_rounds` cap cut a pathological n=6 fit from **30s to 0.25s** (the first run
+was eaten by ~5 such fits, covering only 226 structures) — the wall is now the
+CANDIDATE COUNT: leaf-colored trees grow steeply with bulk (1 star at n_bulk=1;
+143/pair at n_bulk=2; >1000/pair at n_bulk=3, one pair's n_bulk=3 not finishing in
+~11 min). Full n_bulk≥3 across 21 pairs is hours-to-days. This is the concrete
+"interaction wall" the bet anticipated; it converges with sessions 14–16 (s=111
+is hard, not structurally special). Per protocol: HELD UNCOMMITTED; suspects
+{110,145,168} and the README/email untouched.
+
 ## 2026-06-15 — Session 17: hec/attack_207.py — s=207 UNBLOCKED (seed obtained) → it STALLS THE SAME WAY s=111 DOES (bulk-cycle obstruction is GENERAL, not 111-specific)
 
 **The twin s=207 was untouched for ONE reason — no seed. STEP 0 got one, and
