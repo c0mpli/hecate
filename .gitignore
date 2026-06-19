@@ -8,6 +8,8 @@ papers/
 data/raw/
 # generated certificates are committed deliberately, never bulk
 reports/*.tmp
+# transient run-state checkpoints — superseded by the final committed reports
+reports/*_checkpoint.json
 build/
 dist/
 reports/realizations/c5_ladder_validation/
