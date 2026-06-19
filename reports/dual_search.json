@@ -1,0 +1,27 @@
+{
+  "what": "Why the dual (separating-inequality) route to proving s=111 non-tree-realizable is structurally blocked, demonstrated, plus a grounded reframe of the tree-region boundary.",
+  "verdict": "The naive sample-separation method is VACUOUS for this question (it separates 100% of KNOWN tree-realizable extreme rays, including rays 10/17 and 148/148 n=6 orbits). NO rigidity claim about s=111 is or can be made by this route.",
+  "vacuity_demonstration": {
+    "n5_known_realizable_separated": "19/19",
+    "n5_controls_10_17_separated": {
+      "10": true,
+      "17": true
+    },
+    "n6_known_realizable_separated": "148/148",
+    "targets_separated": {
+      "111": true,
+      "207": true
+    },
+    "false_certificate_rate": "100% \u2014 every KNOWN tree-realizable extreme ray is 'separated', so separation is vacuous",
+    "why": "s=111 is an EXTREME RAY of the holographic cone; an extreme ray is never a non-negative combination of other cone elements, so it is separable from any finite sample of other (tree-realizable) vectors \u2014 exactly as every other extreme ray is. The proposed GATE A (must fail to separate a known-realizable vector) therefore fails for EVERY extreme ray: not a code bug, a geometry mismatch."
+  },
+  "tree_boundary_reframe": {
+    "holographic_cone": "closed convex polyhedral rational cone; facets are entropy inequalities (SA, SSA, MMI, and higher-n facets). KNOWN exactly for n<=5; PARTIAL for n=6 (completeness open \u2014 arXiv:2309.06296 ancillary data). s=111/207 satisfy ALL of them (they are holographic \u2014 among the 156 non-violating 6-party orbits of arXiv:2412.15364).",
+    "tree_region_facets": "NO finite set of linear facets distinct from the holographic ones is known to carve out the tree-realizable region. A dual certificate of non-tree-realizability would have to be a tree-region facet NOT implied by the holographic facets; none is known, and if trees realize the full holographic cone (tree conjecture, arXiv:2204.00075) NONE EXISTS.",
+    "simple_tree_boundary": "COMBINATORIAL, not polyhedral: chordality iff (arXiv:2512.24490) \u2014 a vector is simple-forest-realizable iff the line graph of its correlation hypergraph is chordal; a condition on the PMI (vanishing-MI) pattern, not a linear inequality. s=111 is non-chordal, so NOT simple-tree-realizable (this IS settled) \u2014 but that does not decide non-simple trees.",
+    "non_simple_tree_boundary": "fine-graining (arXiv:2512.18702, 2412.18018): tree-realizable iff SOME party-splitting refinement is chordal and coarse-grains back. The refinement space is UNBOUNDED; the boundary is the existence of a chordal refinement \u2014 combinatorial, not a facet.",
+    "contraction_maps": "the contraction-map method (arXiv:2204.00075) proves an inequality VALID on the cone (the facet/primal side) \u2014 it is a validity prover, NOT a separation oracle for tree-vs-graph; it cannot certify a vector is OUTSIDE the tree region.",
+    "honest_route_to_rigidity": "prove NO chordal fine-graining of s=111 exists \u2014 a structural/inductive argument over the unbounded refinement space (the 'deep derivation'). Neither a point-sample nor an LP separation can supply this. The primal search can only ever EXHIBIT a tree, never refute one (this repo's 2-/3-split runs are bounded negatives, not proofs). So rigidity, if true, needs the combinatorial characterization pushed to an impossibility theorem."
+  },
+  "claim_discipline": "No 'rigid'/'non-realizable'/'proven' statement about s=111 appears here; the finding is that the dual route CANNOT produce one. s=111/207 remain holographic and their tree question OPEN."
+}

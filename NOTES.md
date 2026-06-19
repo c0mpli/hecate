@@ -3,6 +3,54 @@
 Newest entries first. Every claim here must be reproducible from a command in
 this repo.
 
+## 2026-06-18 — Session 20: hec/dual_search.py — the DUAL (separating-inequality) route to s=111 rigidity is GEOMETRICALLY VACUOUS (demonstrated); reframe to the combinatorial tree boundary; held uncommitted
+
+**Asked to hunt a separating inequality (Farkas certificate) proving s=111 NOT
+tree-realizable: a c with c·v ≤ 0 for all tree-realizable v but c·v_111 > 0. I did
+NOT build that sample-separation tool — it is geometrically broken — and instead
+PROVED the breakage empirically and reframed at the real obstacle.**
+
+Reproduce: `.venv/bin/python -m hec.dual_search` (report `reports/dual_search.json`;
+tests `tests/test_dual_search.py`).
+
+**Why the dual route is vacuous (exact, geometric).** s=111 is an EXTREME RAY of
+the holographic cone (one of the 208 SSA-compatible 6-party orbits,
+arXiv:2412.15364). An extreme ray is, by definition, NOT a non-negative combination
+of OTHER cone elements; every tree-realizable vector is in the holographic cone; so
+s=111 is separable from any finite sample of OTHER tree-realizable vectors — and so
+is EVERY other extreme ray, including tree-realizable ones. Separation re-expresses
+extremality, not non-realizability.
+
+**The empirical reductio (the deliverable's spine).** The naive separation LP
+"certifies" KNOWN tree-realizable rays as non-realizable at a 100% rate:
+- n=5: **19/19** published C5 extreme rays separated — INCLUDING the rays 10 & 17
+  controls (which ARE tree-realizable, cracked in session 9).
+- n=6: **148/148** tree-realizable orbits separated from the other 147.
+- s=111 and s=207 separated at the SAME 100% rate.
+A method that "proves" 167/167 known-realizable rays non-realizable proves nothing
+about s=111. The proposed GATE A ("must FAIL to separate a known-realizable
+vector") fails for EVERY extreme ray — not a code bug, a geometry mismatch. (This
+confirms the catch BEFORE building the doomed tool.)
+
+**Reframe — where the tree boundary actually is.** The holographic cone is
+polyhedral; its facets (SA/SSA/MMI + higher-n, known for n≤5, partial n=6 per
+arXiv:2309.06296) are all SATISFIED by s=111 (it's holographic). The tree-
+realizable region is a subset but is NOT known to be carved by any finite set of
+linear facets distinct from the holographic ones — its boundary is COMBINATORIAL:
+simple trees ↔ chordality iff (arXiv:2512.24490, a PMI-pattern condition, not a
+linear inequality); non-simple trees ↔ existence of a chordal party-splitting
+fine-graining (arXiv:2512.18702/2412.18018) over an UNBOUNDED refinement space. So
+a dual/facet rigidity certificate would need a tree-region facet not implied by the
+holographic facets — none is known, and if trees realize the full holographic cone
+(tree conjecture, arXiv:2204.00075) NONE EXISTS. The contraction-map method proves
+an inequality VALID on the cone (facet side), not a separation oracle for
+tree-vs-graph. **Honest route to rigidity: prove NO chordal fine-graining exists —
+a structural/inductive impossibility over the refinement space (deep derivation),
+which neither a point-sample nor an LP can supply.** Converges with sessions 14–19:
+s=111 is ordinary/hard; the obstacle is the combinatorial boundary, not a missing
+cheap test. No rigidity/non-realizability claim anywhere; suspects {110,145,168},
+README, email untouched. Held uncommitted.
+
 ## 2026-06-16 — Session 19: EXACTLY-3-SPLIT campaign (s=111 AND s=207) — 12h box → both PARTIAL bounded negatives (no tree); 207 re-run with per-fit-timeout fix → 18/35 triples (salvaged from 1.3); gates pass
 
 **FINAL (after the 207 re-run):** s=111 14/35 triples (4248 structures), s=207 **18/35**
